@@ -3,7 +3,7 @@
  * Proprietary and confidential.
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -84,10 +84,7 @@ const StaffIssueQuestionnaire: React.FC = () => {
               <option value="telehealth">Telehealth-Short</option>
             </select>
           </label>
-          {step === "error" && errorMsg && (
-            <div className="error-banner">{errorMsg}</div>
-          )}
-          <button className="issue-btn" type="submit" disabled={step === "issuing"}>
+          <button className="issue-btn" type="submit">
             Issue Questionnaire
           </button>
         </form>

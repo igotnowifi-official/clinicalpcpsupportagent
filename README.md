@@ -19,6 +19,10 @@ This MVP is a **pilot-ready, production-quality platform** for clinical intake, 
 © 2025 igotnowifi, LLC
 Proprietary and confidential.
 
+## Code Produced by
+- Natasya Liew (@igotnowifi-official)
+- Artem (@arrrtem22)
+
 ---
 
 ## Repo Structure (To Update)

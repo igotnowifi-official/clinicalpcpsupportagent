@@ -107,7 +107,7 @@ const PatientCheckInFlow: React.FC = () => {
         <button
           className="checkin-submit-btn"
           type="submit"
-          disabled={step === "waiting"}
+          disabled={step === "done"}
         >
           Check In
         </button>

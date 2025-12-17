@@ -20,7 +20,7 @@ import StaffIssueQuestionnaire from "./pages/StaffIssueQuestionnaire";
 // Clinician pages
 import ClinicianPortal from "./pages/ClinicianPortal";
 import ClinicianDashboard from "./components/ClinicianDashboard";
-import ClinicianView from "./components/ClinicianView";
+import ClinicianReviewPage from "./pages/ClinicianReviewPage";
 
 // Utility screens
 import NotFoundPage from "./pages/NotFoundPage";
@@ -120,7 +120,7 @@ function App() {
             path="/clinician/review/:session_token"
             element={
               <>
-                <ClinicianView />
+                <ClinicianReviewPage />
                 {CLINICIAN_FOOTER}
               </>
             }

@@ -101,3 +101,18 @@ export interface IssueCard {
     overrides?: { [field: string]: any };
     audit_trail?: any[];
   }
+
+  export interface IntakeSession {
+    session_token: string;
+    patient_id: string;
+    status: 'waiting' | 'questionnaire_issued' | 'in_progress' | 'submitted' | 'completed';
+    issued_by: string;
+    intake_mode: 'full' | 'telehealth';
+    started_at: string; // ISO datetime
+    submitted_at?: string; // ISO datetime
+    expires_at?: string; // ISO datetime
+    intake_data?: IntakeQuestionnaireResponse;
+    entered_by?: string;
+    reported_by?: string;
+    audit_trail?: any[];
+  }

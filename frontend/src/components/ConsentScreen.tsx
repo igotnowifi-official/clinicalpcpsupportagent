@@ -4,15 +4,50 @@
  */
 
 import React from "react";
-import PatientCheckInFlow from "../pages/PatientCheckInFlow";
 
-const CheckInScreen: React.FC = () => {
+interface ConsentScreenProps {
+  consentAcknowledged: boolean;
+  onAcknowledge: () => void;
+  onDecline: () => void;
+}
+
+const ConsentScreen: React.FC<ConsentScreenProps> = ({
+  consentAcknowledged,
+  onAcknowledge,
+  onDecline,
+}) => {
   return (
-    <div className="checkin-screen">
-      <h1>Welcome to Clinic Check-In</h1>
-      <PatientCheckInFlow />
+    <div className="consent-screen">
+      <h2>Consent and Acknowledgment</h2>
+      <div className="consent-content">
+        <p>
+          By proceeding, you acknowledge that you have read and understood the 
+          privacy policy and consent to the collection and use of your health information 
+          for the purposes of providing medical care.
+        </p>
+        <p>
+          Please review the terms and conditions before proceeding.
+        </p>
+      </div>
+      <div className="consent-actions">
+        <button
+          type="button"
+          onClick={onAcknowledge}
+          className="consent-acknowledge-btn"
+          disabled={consentAcknowledged}
+        >
+          I Acknowledge and Consent
+        </button>
+        <button
+          type="button"
+          onClick={onDecline}
+          className="consent-decline-btn"
+        >
+          Decline
+        </button>
+      </div>
     </div>
   );
 };
 
-export default CheckInScreen;
+export default ConsentScreen;
