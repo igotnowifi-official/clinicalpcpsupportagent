@@ -1,0 +1,12 @@
+rule_id,name,vital,operator,threshold,unit,id
+spo2_critical,SpO2 critical low,spo2,<,90,%,1bbdb8138fa50c9a926727aef51631cdf25f1c9394df3628777bc72bfe50ebef
+spo2_low,Low oxygen saturation,spo2,<,92,%,c43b2048875af9501456cca837a0c6b3c615ce725e45c7972ae0564cd1918c21
+spo2_borderline,Borderline oxygen saturation,spo2,<=,94,%,a7318f2b1302ccbeb58fe48704f7f8585fe899bff22f07f27ee35ed551ccc7cd
+bp_stage2_sys,High systolic BP (stage 2),bp_systolic,>=,160,mmHg,eb31989808333e78d7248ca1af3cc2a2877c8fd3cd78fd8bb7f659ac723d5831
+bp_urgency_sys,Very high systolic BP,bp_systolic,>=,180,mmHg,c060c9573aff6815237d56904addb4b0a4afbb82a8ef6d70ac81a41df54917c8
+bp_urgency_dia,Very high diastolic BP,bp_diastolic,>=,120,mmHg,28e81f6e53fd1eb8bdc9725e9e764ea86b7e755f5fb8751efa297cd6064ad43d
+hr_tachy,Tachycardia,heart_rate,>=,120,bpm,a95b70bfbfa912eadd6d467bd19cbee77119078ec5d8540bd758c808b147092c
+hr_brady,Bradycardia,heart_rate,<=,45,bpm,ded94e3578b4e6b700754baffa750fccdcf8e4a046de7a109cf7d807bc7f4d83
+temp_high,High fever,temperature_c,>=,39,C,238d81c7622cacdd69326a68cbc5ebb0633e3189494cd30f305d4458cf3c3f73
+temp_moderate,Fever,temperature_c,>=,38,C,ebe98d8722d6538c61c6ea27872f25d1c31c74b1e048e896205d1a5297ae8e73
+temp_low,Low temperature,temperature_c,<=,35,C,45e6682fbbd1d13767f0549affcfbb4da925dcd3d0cb0507bf59714a60aeb70e

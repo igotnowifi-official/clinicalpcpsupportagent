@@ -1,0 +1,10 @@
+question_id,section,question_text,question_type,required,maps_to,notes,id
+tele_cc_open,Chief Concern,What brings you in today?,free_text,True,context.chief_concern,,b48fe86052fa9d238839d18cb3be895805981b4b96507b322f430d3cac948b81
+tele_symptoms_core,Symptoms,Select symptoms (condensed checklist),ui_component,True,symptoms[],Use same symptom IDs as full intake,8d0fa2d90732570190d5bcc89a5a83fcb4b65d6e1399cc968c95642e83da6ea3
+tele_redflags,Red Flags,Answer red-flag screening questions,ui_component,True,red_flags,Same as full red flags,f8a75820a8c3922a99d80ef8819af700e0dff13f51c8cb1105b9b7c87112c0e2
+tele_meds,Medications,List medications/supplements,free_text,True,history.medications_free_text,,edcf9df9faefbdf48a252ff3b145c30aabd7c64b37ec0d69a170be3bc30ca1b7
+tele_allergies,Allergies,List drug allergies and reactions,free_text,True,history.allergies_drug_text,Allow 'none',9dc945980b739df4732b4c889713eddd86595819b64661ac5c25b15bb2971fdb
+tele_pmh,Medical History,Select chronic conditions,multi_select,False,history.conditions,,1b5fa4957ff65c7a226c8719fdb7c01a8d6d75219d89cd1e564ba20cf7a9d7be
+tele_vitals,Vitals,Enter vitals if known (unknown allowed),ui_component,True,vitals,Unknown triggers assistant actions,2d43e794786403b642e3a432dfaeb7e032fc5d2dc460c337068a83d72e692863
+tele_social_short,Social History,Tobacco/vape and alcohol (short),ui_component,False,history.social,Prefer not to say allowed,f0eda9f9e68ae22369bf79951bac70062b9359091f458378c1ef5e5909333c36
+tele_ros_other,Other,Anything else you want to add?,free_text,False,context.ros_other,,0bb3838dc63b044cd7aed0bc02bb85cb1fe1d311027607cd22e3a3014343fbd4
