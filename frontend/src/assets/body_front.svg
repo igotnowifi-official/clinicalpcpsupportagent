@@ -1,0 +1,50 @@
+<!--
+© 2025 igotnowifi, LLC
+Proprietary and confidential.
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 256 512"
+  width="256"
+  height="512"
+>
+  <!-- Head -->
+  <ellipse id="head" cx="128" cy="44" rx="28" ry="34" fill="#dde6ef" stroke="#46546b" stroke-width="2"/>
+  
+  <!-- Neck -->
+  <rect id="neck" x="112" y="78" width="32" height="16" fill="#dde6ef" stroke="#46546b" stroke-width="2"/>
+
+  <!-- Chest -->
+  <rect id="chest" x="88" y="94" width="80" height="52" rx="22" fill="#ccd7e2" stroke="#46546b" stroke-width="2"/>
+
+  <!-- Abdomen -->
+  <rect id="abdomen" x="98" y="146" width="60" height="56" rx="24" fill="#bfd1e0" stroke="#46546b" stroke-width="2"/>
+
+  <!-- Pelvis -->
+  <ellipse id="pelvis" cx="128" cy="212" rx="34" ry="20" fill="#b2c8dd" stroke="#46546b" stroke-width="2"/>
+
+  <!-- Left Shoulder -->
+  <ellipse id="left_shoulder" cx="74" cy="104" rx="13" ry="13" fill="#b2c8dd" stroke="#46546b" stroke-width="2"/>
+  <!-- Right Shoulder -->
+  <ellipse id="right_shoulder" cx="182" cy="104" rx="13" ry="13" fill="#b2c8dd" stroke="#46546b" stroke-width="2"/>
+
+  <!-- Left Arm -->
+  <rect id="left_arm" x="48" y="116" width="16" height="72" rx="7" fill="#dde6ef" stroke="#46546b" stroke-width="2"/>
+  <!-- Right Arm -->
+  <rect id="right_arm" x="192" y="116" width="16" height="72" rx="7" fill="#dde6ef" stroke="#46546b" stroke-width="2"/>
+
+  <!-- Left Hand -->
+  <ellipse id="left_hand" cx="56" cy="193" rx="11" ry="13" fill="#bdd0df" stroke="#46546b" stroke-width="2"/>
+  <!-- Right Hand -->
+  <ellipse id="right_hand" cx="200" cy="193" rx="11" ry="13" fill="#bdd0df" stroke="#46546b" stroke-width="2"/>
+
+  <!-- Left Leg -->
+  <rect id="left_leg" x="108" y="232" width="18" height="132" rx="9" fill="#dde6ef" stroke="#46546b" stroke-width="2"/>
+  <!-- Right Leg -->
+  <rect id="right_leg" x="130" y="232" width="18" height="132" rx="9" fill="#dde6ef" stroke="#46546b" stroke-width="2"/>
+
+  <!-- Left Foot -->
+  <ellipse id="left_foot" cx="117" cy="380" rx="16" ry="10" fill="#b1c7dc" stroke="#46546b" stroke-width="2"/>
+  <!-- Right Foot -->
+  <ellipse id="right_foot" cx="139" cy="380" rx="16" ry="10" fill="#b1c7dc" stroke="#46546b" stroke-width="2"/>
+</svg>
