@@ -9,6 +9,7 @@ from typing import Optional
 from datetime import datetime, timedelta
 import uuid
 
+from api.models.intake import IntakeSession
 from api.services.audit_logger import get_audit_logger
 from api.adapters.memory_store import get_memory_store
 from api.config import settings
@@ -30,6 +31,7 @@ class PatientCheckInResponse(BaseModel):
     checked_in_at: datetime
     status: str
     audit_event_id: str
+    session_token: Optional[str] = None
 
 
 @router.post("/checkin", response_model=PatientCheckInResponse, tags=["Patient"])
@@ -71,11 +73,32 @@ async def check_in_patient(
         "status": "waiting"
     }, ttl=24 * 3600)
 
+    # Generate intake session token
+    session_token = f"q_{uuid.uuid4().hex[:20]}"
+    expires_at = now + timedelta(minutes=settings.TOKEN_EXPIRE_MINUTES)
+    
+    session_obj = IntakeSession(
+        session_token=session_token,
+        patient_id=patient_id,
+        status="questionnaire_issued",
+        issued_by="kiosk",
+        intake_mode="full",
+        started_at=now,
+        expires_at=expires_at,
+        submitted_at=None,
+        intake_data=None,
+        entered_by=None,
+        reported_by=None,
+        audit_trail=[]
+    )
+    
+    memory_store.set(f"intake_session:{session_token}", session_obj.dict(), ttl=settings.TOKEN_EXPIRE_MINUTES * 60)
+
     audit_event_id = audit_logger.log_event(
         event_type="check_in",
         actor_type="patient",
         actor_id=patient_id,
-        session_token=None,
+        session_token=session_token,
         patient_id=patient_id,
         metadata={
             "case_id": case_id,
@@ -88,5 +111,6 @@ async def check_in_patient(
         patient_id=patient_id,
         checked_in_at=now,
         status="waiting",
-        audit_event_id=audit_event_id
+        audit_event_id=audit_event_id,
+        session_token=session_token
     )
