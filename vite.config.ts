@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => ({
   root: "./frontend",
   server: {
     host: "::",
-    port: 8080,
+    port: 5173,
   },
   plugins: [react(), mode === "development"].filter(Boolean),
   resolve: {
