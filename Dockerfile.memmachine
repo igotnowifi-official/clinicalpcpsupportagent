@@ -1,0 +1,5 @@
+FROM memmachine/memmachine:latest
+
+# Install pip via ensurepip since it's missing in venv
+RUN python3 -m ensurepip && \
+    python3 -m pip install sentence-transformers

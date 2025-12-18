@@ -17,3 +17,4 @@ sqlalchemy
 itsdangerous
 neo4j
 pyyaml>=6.0.1
+mem0ai

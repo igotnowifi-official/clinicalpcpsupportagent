@@ -1,0 +1,51 @@
+server:
+  host: 0.0.0.0
+  port: 8001
+
+logging:
+  level: INFO
+
+resources:
+  databases:
+    sqlite_db:
+      provider: sqlite
+      config:
+        path: /data/memmachine.db
+    
+    neo4j_db:
+      provider: neo4j
+      config:
+        host: neo4j
+        port: 7687
+        user: neo4j
+        password: password
+  
+  embedders:
+    local_embedder:
+      provider: sentence-transformer
+      config:
+        model: all-MiniLM-L6-v2
+  
+  language_models:
+    mock_llm:
+      provider: openai-chat-completions
+      config:
+        model: gpt-3.5-turbo
+        api_key: "mock"
+
+episodic_memory:
+  enabled: true
+  session_key: session_id
+  long_term_memory_enabled: false
+  short_term_memory_enabled: false
+  
+semantic_memory:
+  database: neo4j_db
+  llm_model: mock_llm
+  embedding_model: local_embedder
+
+session_manager:
+  database: sqlite_db
+
+episode_store:
+  database: sqlite_db

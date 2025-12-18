@@ -1,0 +1,10 @@
+server:
+  host: 0.0.0.0
+  port: 8001
+
+auth:
+  api_key: dev
+
+storage:
+  backend: local
+  path: /data

@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     DATABASE_CONNECT_RETRY: int = Field(default=5, env="DATABASE_CONNECT_RETRY")
 
     # Knowledge Pack Excel
-    KNOWLEDGE_PACK_PATH: str = Field(default="data/clinical_knowledge_pack_prefilled_v02_with_questionnaire.xlsx", env="KNOWLEDGE_PACK_PATH")
+    KNOWLEDGE_PACK_PATH: str = Field(default="data/knowledge_pack/clinical_knowledge_pack_prefilled_v02_with_questionnaire.xlsx", env="KNOWLEDGE_PACK_PATH")
 
     # Mock adapters for Neo4j and MemVerge
     MOCK_NEO4J: bool = Field(default=True, env="MOCK_NEO4J")

@@ -40,9 +40,9 @@ async def run_triage(
     audit_logger = get_audit_logger()
     triage_engine = get_triage_engine()
 
-    session_token = req.get("session_token")
+    session_token = req.get("intake_session_token") or req.get("session_token")
     if not session_token:
-        raise HTTPException(status_code=400, detail="Missing session_token")
+        raise HTTPException(status_code=400, detail="Missing intake_session_token")
     session = memory_store.get(f"intake_session:{session_token}")
     if not session or not session.get("intake_data"):
         raise HTTPException(status_code=404, detail="No intake data to triage.")
