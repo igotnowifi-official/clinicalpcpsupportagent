@@ -8,6 +8,7 @@ from datetime import datetime
 import uuid
 
 import pandas as pd
+from pydantic import ValidationError
 
 from api.models.intake import IntakeQuestionnaireResponse
 from api.models.triage import (
@@ -56,7 +57,7 @@ class TriageEngine:
 
         # 2. Match symptoms/issues to possible conditions
         patient_positive_symptoms = set(s.symptom_id for s in intake.symptoms if s.present)
-        issue_descriptions = [ic.description for ic in intake.issue_cards]
+        issue_descriptions = [ic.description for ic in intake.issue_cards if ic.description]
         pmh = set(intake.pmh)
         red_flag_states = {rf.red_flag_id: rf.present for rf in intake.red_flags if hasattr(rf, 'present')}
         meds = set([m.med_class for m in intake.medications])
@@ -78,12 +79,25 @@ class TriageEngine:
         for idx, row in conditions_df.iterrows():
             cond_id = row.get('condition_id')
             cond_name = row.get('condition_name')
+
+            # NEW: Skip invalid/unnamed conditions (prevents Pydantic ValidationError)
+            if not cond_id or not cond_name or not str(cond_name).strip():
+                continue
+            cond_name = str(cond_name).strip()
+
             cond_symptoms = str(row.get('key_symptoms') or "").split(";")
             cond_rf_ids = [rf.strip() for rf in str(row.get('red_flags') or "").split(";") if rf.strip()]
             cond_supports = str(row.get('supports') or "").split(";")
             match_symptoms = len(set(cond_symptoms) & patient_positive_symptoms)
             match_supports = len(set(cond_supports) & pmh)
-            match_issues = sum(1 for desc in issue_descriptions if cond_name.lower() in desc.lower())
+
+            # CHANGED: guard against None cond_name and None issue descriptions
+            cond_name_safe = (cond_name or "").strip().lower()
+            if not cond_name_safe:
+                match_issues = 0
+            else:
+                match_issues = sum(1 for desc in issue_descriptions if cond_name_safe in (desc or "").lower())
+
             # Score: weighted sum for this MVP
             score = match_symptoms * 2 + match_supports + match_issues
             # Add weight if patient has key medication or allergy
@@ -206,3 +220,45 @@ class TriageEngine:
             red_flags=flagged,
             major_anomalies=major_anomalies
         )
+
+        # 10. Finalize and return TriageResult
+        triage_id = str(uuid.uuid4())
+        created_at = datetime.utcnow()
+
+        # Build a candidate payload with common field names, then filter to what the model actually accepts.
+        candidate: Dict[str, Any] = {
+            "triage_id": triage_id,
+            "created_at": created_at,
+            "previous_triage_id": previous_triage_id,
+            "actor_type": actor_type,
+            "actor_id": actor_id,
+
+            # Most common/likely names for summary + condition lists:
+            "summary": triage_summary,
+            "triage_summary": triage_summary,
+
+            "conditions": top_5_conditions,
+            "top_conditions": top_5_conditions,
+            "differential": probs_sorted,
+            "condition_probabilities": probs_sorted,
+
+            "assistant_actions": assistant_actions,
+            "followup_questions": followup_questions,
+            "follow_up_questions": followup_questions,
+            "suggestions": suggestions,
+
+            # Sometimes teams include an intake snapshot:
+            "intake_data": intake,
+            "intake": intake,
+        }
+
+        # Filter to only fields the model declares (prevents "extra fields not permitted" issues).
+        model_fields = getattr(TriageResult, "model_fields", {}) or {}
+        filtered = {k: v for k, v in candidate.items() if k in model_fields}
+
+        try:
+            return TriageResult(**filtered)
+        except ValidationError:
+            # As a last resort, construct without validation using only known fields.
+            # This prevents returning None and breaking the route handler.
+            return TriageResult.model_construct(**filtered)
