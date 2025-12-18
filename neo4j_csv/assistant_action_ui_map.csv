@@ -1,0 +1,19 @@
+assistant_action_id,ui_control,field_keys,min_value,max_value,unit_label,dropdown_options,placeholder_text,id
+collect_spo2,number,spo2,50.0,100.0,%,,Enter oxygen saturation,702633ea13ced6f1c87b49004eb800a11e9945d687b3be3e2c237d800ff161b9
+collect_bp,two_number,"bp_systolic,bp_diastolic",50.0,250.0,mmHg,,Enter blood pressure,0d24866dbeb31dcd42278b970e49facbfedf650983fd3cc4d13acf2631358922
+collect_temperature,number,temperature_c,30.0,45.0,C,,Enter temperature,972e10ccd914df79ca8308cae6d0cb2da680daa5dbfc6c863b972afb865cd2f3
+collect_heart_rate,number,heart_rate,30.0,220.0,bpm,,Enter heart rate,85ce626247398c1d6c71d5488b46f59c851c00f9c244f9fffa7f28cff4f7a261
+collect_respiratory_rate,number,respiratory_rate,5.0,60.0,breaths/min,,Enter respiratory rate,c20b5e96f76f455a5692ffad102a4a4149e1b3902d20b29eca8749724f1296fa
+collect_repeat_measurements,dropdown,repeat_measurement_type,,,,"bp,spo2,temperature,heart_rate,respiratory_rate",Choose measurement to repeat,d74643af483e82994531d9d3c0f989c7428a3b5eb57c8274228222d3695b51b1
+clarify_symptom_severity,dropdown,symptom_severity,,,,"mild,moderate,severe",Select severity,e8f1992942cf853e5815f9c009804331672374594c6f2c1044875d8210788d18
+clarify_symptom_duration,dropdown,symptom_duration,,,,"today,days,weeks,months",Select duration,7dbed21cb6f18a9495293779216668ec833a231dbcd9ca890d9da470be1c1279
+clarify_functional_impact,dropdown,functional_impact,,,,"none,mild,moderate,severe",Select impact,8fbaa52a5e4baac0417ce5d119d9f075e5a7170b48ec5d610f0383ce22ef3de1
+clarify_posture_and_ergonomics,textarea,posture_notes,,,,,Add posture and ergonomics details,8fc128d77530d70de18c4c0878111b6baa9e67a9da8917705d98fbfc8e8fc58c
+clarify_screen_time,dropdown,screen_time_level,,,,"low,moderate,high",Select screen time level,61a2b5a04bdbe10ad3a12b90673be55713095e8ca3baa1ca71fb75be3c4fd3f2
+clarify_sleep_pattern,dropdown,sleep_quality,,,,"good,fair,poor,irregular",Select sleep quality,25380daca1fcaeb6198b73a61008f638ecad6c075e098ab67480e396d94f5c26
+clarify_stress_level,dropdown,stress_level,,,,"low,moderate,high",Select stress level,2def970707b6be091c9704fd80bd7dd4d2f8d3681c2450eb71cd011ef201faa8
+clarify_substance_timing,textarea,substance_timing_notes,,,,,Add timing details (optional),5456570f7c6ae69432aa9a9d3cf3f25f590e6e85601df841de8c36f1ad921991
+clarify_exposure_history,textarea,exposure_notes,,,,,Add exposure details (optional),81522e42eebb7f8e5d8ea5b4bcd51e602c17d9601dc0ca45e348d9878a22a16d
+clarify_neuro_symptoms,yes_no,neuro_red_flags_present,,,,,"Any new weakness, facial droop, or speech trouble?",24cafe93a32261224254e56020943d849afacf2f930c91e8d8959e2e5ec66c7c
+clarify_hydration_status,dropdown,hydration_status,,,,"adequate,possibly_low,low",Select hydration status,36fc471c9a5de3ba1130997bbcdf22484ef3a290f6a8d9304c380c4fb754bd0e
+clarify_pain_character,textarea,pain_character_notes,,,,,Describe pain character/location,a180f5de317a73595a40f20fc93f5d207b2fc0d070a96f87e746b1f15a470554

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # © 2025 igotnowifi, LLC
 # Proprietary and confidential.
 
@@ -11,3 +12,15 @@ httpx==0.27.0
 pytest==8.2.0
 requests==2.32.3
 typing-extensions>=4.0.0
+=======
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-dotenv
+sqlalchemy
+pandas
+openpyxl
+itsdangerous
+python-multipart
+>>>>>>> 1c0d7b5cfdbe47a8955e15b9755f13f414926288

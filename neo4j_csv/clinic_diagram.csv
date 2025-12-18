@@ -1,0 +1,9 @@
+key,value,id
+Section,Description,6fc26d1398aad4fe7061d295015b389de0a1411516146beb156afdcdb186403c
+Diagram,See README-style diagram below.,c9e02099d19bc5c876e86f0ce66cd9ac4b21af668e0b48c0e5f0bb4ecd0b845e
+Nodes,"Symptom, VitalRule, Condition, RedFlag, LabTest, Specialist, MedicationOption, ActionRecommendation, AssistantAction, PatientGuide, MessageTemplate",fb2fd47bcb7a16dbe5b55149ad492b36c40f5b4bbc5556dfd6ac0097a0b47f33
+Edges,"SUPPORTS, TRIGGERS, SUGGESTS_LAB, REFERRAL_TO, SUGGESTS_MED, SUGGESTS_ACTION, SUGGESTS_ASSISTANT_ACTION, CONDITION_GUIDE, ACTION_GUIDE, CONDITION_TEMPLATE",c09e9abd320d8c259b118ea6f3ffc31609172553bd1b82336ef7a56dc82ccec5
+ASCII,"Symptom/VitalRule --SUPPORTS--> Condition --(labs/referrals/meds/actions/guides/templates)
+Symptom/VitalRule --TRIGGERS--> RedFlag --(labs/referrals/actions/assistant-actions)
+AssistantAction UI map drives clinician assistant panel inputs.
+Clinician finalizes plan -> message template + guides -> draft email (mock send).",b677acd358ed819d359ab6e80ea077f1d8f61dd29ba61b34d4b4e99fc73fdb58

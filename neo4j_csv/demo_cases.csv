@@ -1,0 +1,7 @@
+case_id,title,symptoms_csv,vitals_json,history_json,expected_notes,id
+case_posture_migraine,Posture-related headache,"headache,screen_overuse,poor_posture,neck_pain","{""spo2"":98,""bp_systolic"":128,""bp_diastolic"":82}","{""social"":{""occupation_exposures"":[""desk_work""],""sleep_quality"":""fair""}}",Expect posture-related headache and guides,813fe1eb3321a25e8911a9bb9e40efbb09814b456ada6ec7c740ef19a4dce703
+case_allergy,Allergy classic,"itchy_eyes,sneezing,runny_nose","{""spo2"":98}",{},Expect allergic rhinitis top,e29baefb964370fc53989cd3169a8ba50999a7893b89ee9e253cc8f19f87cda6
+case_flu,Flu-like,"fever,cough,body_aches,fatigue","{""temperature_c"":38.7,""spo2"":97}",{},Expect influenza-like illness top,15500b87e035c96738e40f55da19b1c285b33caf1e2cd36ec36b5dfc734c5883
+case_bp_urgent,Very high BP,headache,"{""bp_systolic"":190,""bp_diastolic"":125}",{},Expect urgent red flag BP very high,c7b1467eca9269e2b6194488142b8531fefa5f2610bb490e38357083ed685d81
+case_spo2_urgent,Low oxygen,"shortness_of_breath,cough","{""spo2"":90}",{},Expect urgent red flag SpO2 low,b6dddfcfd10d7a3acfd1b98bbe92db3bcf217fcc9e2c4a663459dfd48cc5fa9e
+case_hypergly,Hyperglycemia risk,"polyuria,polydipsia,blurred_vision",{},{},Expect A1c + fasting glucose suggestions,8077a15a5f89af14b0ad914430ea9f059fe0ba90cd64228f739394a7eb84927d

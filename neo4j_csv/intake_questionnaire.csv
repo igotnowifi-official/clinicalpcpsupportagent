@@ -1,0 +1,90 @@
+question_id,section,question_text,question_type,required,tier,maps_to,notes,id
+consent_ack,Consent,I understand this tool is not a diagnosis and a clinician will review.,checkbox,True,1,consent.accepted,,e6e7dbaea8f1bb306b89619165df25d49c2d2628375a60009853b511fbb8907f
+disclaimer_med_use,Consent,I understand my answers are used only for medical care.,checkbox,True,1,consent.medical_use_only,,e45888739cfeabb77460f04ee64f4f8252253367372b75843cbbcd4cf802451e
+disclaimer_no_prosecution,Consent,I understand answers are not shared for law enforcement purposes.,checkbox,True,1,consent.no_law_enforcement,,83204159a5a731e4633877ee9ece1e0eb50a191a068202b515f8c02a0ba4c50a
+demo_birthdate,Demographics,Birthdate,date,True,1,patient.birthdate,,bc453fb7680be030f2ccb17e142004899971191ebb2a23d20fce5e5706f860c2
+demo_language,Demographics,Preferred language (optional),free_text,False,3,patient.preferred_language,,ed99054e5f2f174dd760ef19e24e8ce03b914b5c37ec61a5adccb48c240356b5
+cc_open,Chief Concern,What brings you in today?,free_text,True,1,context.chief_concern,,6886f365c5c9121c9b5bbb30b51bf0f14837dba6aa449c0cb87c197344c3f6f9
+bodymap_select,Body Map,Select areas of concern on the body map (front/back).,ui_component,False,1,issues[].body_region_id,Creates issue cards,c83a4d69636f4602eaf92ce2ca3e53933ef78fd1e7c4f0192ab4e377734ad37e
+issue_desc,Issue Card,Describe what’s wrong in this area.,free_text,True,1,issues[].description,,0a2b88a952bce3467604f1a7b3000c4c9d301de1d0c1b02d962d8f03087ad2a0
+issue_pain,Issue Card,Pain severity (0–10),numeric,True,1,issues[].pain_score_0_10,,2abb3454c5b45a7355bbc3d79b1ebe47fbad2eb8266412bf9c8bef4f4e5bbd0d
+issue_function,Issue Card,Functional impact,radio,True,1,issues[].functional_impact,none/mild/moderate/severe,b800f7ca2970f431423ac70e6d951fa26717174cfa7b3eb5c85c8e06591200e4
+issue_onset,Issue Card,When did it start?,radio,True,1,issues[].onset,today/days/weeks/months,df514513cf1d00e0bf29ac083b2cb804c4e5949cb0839260519ed873b5cbf40d
+issue_course,Issue Card,"Has it been improving, worsening, or unchanged?",radio,True,1,issues[].course,,9544cc38ddc9655445bb5124005acea234ed6d314d8645e57c27d0526f1e9ee9
+issue_triggers,Issue Card,Any triggers? (optional),free_text,False,3,issues[].triggers,,4f457ab24286500c6d02a8e33365ff37305b4fead4390ff0b3742fa78152b70b
+issue_relief,Issue Card,What makes it better? (optional),free_text,False,3,issues[].relief_factors,,0307a9267db6aee1ecc03707884f64f2ac246568e64688e45f06ebbb8e4f4d70
+sym_fever,Symptoms - Systemic,Fever,checkbox,False,1,fever,maps_to nodes_symptom.symptom_id,0a291f253e788212e573b7a385c9230e8073ac6df8f6ae45ba136e1f9ece5e87
+sym_chills,Symptoms - Systemic,Chills,checkbox,False,1,chills,maps_to nodes_symptom.symptom_id,168a1de1ba0ef34d7bdb1a9ee754ef8a4d47c1f48d4ce09b7f3277b2d9793f9e
+sym_fatigue,Symptoms - Systemic,Fatigue,checkbox,False,1,fatigue,maps_to nodes_symptom.symptom_id,a5448e612136540130f6dc67af23a2092706fc073d5a7ffb7f3600e7a63b4d13
+sym_weight_loss,Symptoms - Systemic,Weight loss,checkbox,False,1,weight_loss,maps_to nodes_symptom.symptom_id,1177b2eebfe3c607c1695097737ac752e6930112ddfa559f48c649fba1938cf4
+sym_weight_gain,Symptoms - Systemic,Weight gain,checkbox,False,1,weight_gain,maps_to nodes_symptom.symptom_id,b80eb3a3627b7331638c6e6d07fa33dc1b5c9513768b2500b20d25a6d165210d
+sym_night_sweats,Symptoms - Systemic,Night sweats,checkbox,False,1,night_sweats,maps_to nodes_symptom.symptom_id,db354b8981ed1ef7bfc90253672ebde9b0f369dc20f7bda0d4d730ed2b53e59d
+sym_headache,Symptoms - Neuro,Headache,checkbox,False,1,headache,maps_to nodes_symptom.symptom_id,c8492f0e659e05a2673e5d7ea34cdbe01dffed40a0d3e2984aba3b517cf7b036
+sym_dizziness,Symptoms - Neuro,Dizziness,checkbox,False,1,dizziness,maps_to nodes_symptom.symptom_id,208940c2433c360bc3efb7eb4ad3e7a12a59b71507f78841eb624e70a11acf4c
+sym_fainting_syncope,Symptoms - Neuro,Fainting or near-fainting,checkbox,False,1,fainting_syncope,maps_to nodes_symptom.symptom_id,876a172f112a3b75b3415b28d0af6dd3a60b60fc60827dce30218b9f2fa138d2
+sym_new_weakness,Symptoms - Neuro,New weakness,checkbox,False,1,new_weakness,maps_to nodes_symptom.symptom_id,53a0fa9307f687552855b02064d9f1ff9f64b17e2757aa920965e3179bfae0f7
+sym_tingling,Symptoms - Neuro,Numbness or tingling,checkbox,False,1,tingling,maps_to nodes_symptom.symptom_id,cb4ad4ce3d2065e557566285b2510abeee52501b7300cb2364bbb57e27e0b2cd
+sym_blurred_vision,Symptoms - Neuro,Vision changes,checkbox,False,1,blurred_vision,maps_to nodes_symptom.symptom_id,3904724b2749e869024b3909d7f5bacb5115cc3aa57706a106469f442f2f0780
+sym_confusion,Symptoms - Neuro,Confusion,checkbox,False,1,confusion,maps_to nodes_symptom.symptom_id,c65448456ffa40cb788b9ec0e5d00ef7761463bab4e3d13b1f319857e0e00830
+sym_cough,Symptoms - Respiratory,Cough,checkbox,False,1,cough,maps_to nodes_symptom.symptom_id,5631e8e277a945b723010bc464228dac6ba34ab21903faaf8e83a08928fa60ca
+sym_shortness_of_breath,Symptoms - Respiratory,Shortness of breath,checkbox,False,1,shortness_of_breath,maps_to nodes_symptom.symptom_id,47234824a899eb6530c408bfdf4edf4ea999281ff0a65b12ecacb1fc9409c5e8
+sym_wheezing,Symptoms - Respiratory,Wheezing,checkbox,False,1,wheezing,maps_to nodes_symptom.symptom_id,70eb2b8fa662b1dd3feaf51eb057a162949734d6252fc98952ae18a31bbcc481
+sym_chest_tightness,Symptoms - Respiratory,Chest tightness,checkbox,False,1,chest_tightness,maps_to nodes_symptom.symptom_id,d72ee444ff4af4ecde5861b1913abcbaf1b4dd1c2c5ac212acf92b83cfdf70c9
+sym_chest_pain,Symptoms - Cardiac,Chest pain or pressure,checkbox,False,1,chest_pain,maps_to nodes_symptom.symptom_id,edd070087480f473c7f8ecacd3a414eb9ed50bfa520a9455be434e54ed1c6d16
+sym_palpitations,Symptoms - Cardiac,Palpitations,checkbox,False,1,palpitations,maps_to nodes_symptom.symptom_id,bd843dce0d7c11d71d6365d7dbf7dab2283e19b1b78a64a9bf20096301df8575
+sym_leg_swelling,Symptoms - Cardiac,Leg swelling,checkbox,False,1,leg_swelling,maps_to nodes_symptom.symptom_id,87f7ceef993e41e4a1d6cacc8f3f6ac8515e928c3744dd9f759ce252e9bb0225
+sym_nausea,Symptoms - GI,Nausea,checkbox,False,1,nausea,maps_to nodes_symptom.symptom_id,ab8c6d5a55d1972bea47c0685930b378117104940559088421b5f529eb20d17a
+sym_vomiting,Symptoms - GI,Vomiting,checkbox,False,1,vomiting,maps_to nodes_symptom.symptom_id,a7fd16f450550ef44e4d6ec797ba578d1b2d836b6007ce643b713efd62c71e46
+sym_diarrhea,Symptoms - GI,Diarrhea,checkbox,False,1,diarrhea,maps_to nodes_symptom.symptom_id,3e1caa64d16dff612282e2c6eb511cfc38c4370976b8cd774cc1069db520976a
+sym_constipation,Symptoms - GI,Constipation,checkbox,False,1,constipation,maps_to nodes_symptom.symptom_id,8a8192f224254b54f0259d8f38aa88fbc43550af408314508a0e68ca074aaf11
+sym_abdominal_pain,Symptoms - GI,Abdominal pain,checkbox,False,1,abdominal_pain,maps_to nodes_symptom.symptom_id,3f6be4969a759687eef398929b416fc5137e1dfb405b9c8cbf6841bda603aded
+sym_heartburn,Symptoms - GI,Heartburn / reflux,checkbox,False,1,heartburn,maps_to nodes_symptom.symptom_id,c1aa1e8d3d619982893e7957dc17c89347e22cc7de65dce423f66851f749760d
+sym_blood_in_stool,Symptoms - GI,Blood in stool,checkbox,False,1,blood_in_stool,maps_to nodes_symptom.symptom_id,c47624df71ad4eb411b79ddf7ca4f9a794ab26880145eb00c71d2d280cb156a9
+sym_blood_in_vomit,Symptoms - GI,Blood in vomit,checkbox,False,1,blood_in_vomit,maps_to nodes_symptom.symptom_id,0a9cf7506ba25a2969dac49cad45dd03ff2aaefe5a5292d89914d3a42f7e43e9
+sym_painful_urination,Symptoms - GU,Painful urination,checkbox,False,1,painful_urination,maps_to nodes_symptom.symptom_id,f2cbbcbe007feb8f51a57feb5765548af990e7ec0f893e7846f862d728311a4f
+sym_urinary_frequency,Symptoms - GU,Urinary frequency,checkbox,False,1,urinary_frequency,maps_to nodes_symptom.symptom_id,e53b57f91a0857156ec5b3c9fafe7a41b71817fce3a745ea1b9e27df5c8296d4
+sym_urinary_urgency,Symptoms - GU,Urinary urgency,checkbox,False,1,urinary_urgency,maps_to nodes_symptom.symptom_id,7f39b93f02892b7386c4facb29610a2b533e1d91f818c231f39589d7498c047a
+sym_blood_in_urine,Symptoms - GU,Blood in urine,checkbox,False,1,blood_in_urine,maps_to nodes_symptom.symptom_id,92e1629bc8a374041e8aa10e30f4305ff33638bee5fcaf2ad8a608f2ca69fb70
+sym_rash,Symptoms - Skin,Rash,checkbox,False,1,rash,maps_to nodes_symptom.symptom_id,6d23c2acaf72a1b54775c0abf549a4380f61874421588368c38ae28ed9d2947b
+sym_itching,Symptoms - Skin,Itching,checkbox,False,1,itching,maps_to nodes_symptom.symptom_id,20fc4360c33b6868175ebee0c294151190e2a3154f3637727cb0a9ea31115d09
+sym_hives,Symptoms - Skin,Hives,checkbox,False,1,hives,maps_to nodes_symptom.symptom_id,ed7f2c2f601474b4fd4a581279110ded99a9394c1dcd7fb7265ae7244f722ce7
+sym_skin_redness_warmth,Symptoms - Skin,Redness or warmth of skin,checkbox,False,1,skin_redness_warmth,maps_to nodes_symptom.symptom_id,092049b23745cfc9d37cee1d2903f66865ebba88ca541673bb3d8506efc407a3
+sym_poor_wound_healing,Symptoms - Skin,Wounds not healing,checkbox,False,1,poor_wound_healing,maps_to nodes_symptom.symptom_id,98528e920d08f483a8d9eb5105777a5f0ca6817e70501b427006420c012b6522
+sym_joint_pain,Symptoms - MSK,Joint pain,checkbox,False,1,joint_pain,maps_to nodes_symptom.symptom_id,dc679906f0fd5287914848a1dd1e397acf21170ac0dee5247fc1671e384d3cda
+sym_joint_stiffness,Symptoms - MSK,Joint stiffness,checkbox,False,1,joint_stiffness,maps_to nodes_symptom.symptom_id,9cd7712482d42a83bfd03d169914163da7027b2b3426e386e13a1d1c37f42352
+sym_joint_swelling,Symptoms - MSK,Joint swelling,checkbox,False,1,joint_swelling,maps_to nodes_symptom.symptom_id,a0e1794a16fb4abc69d83a9990f36004d553af04854931114c803e504f0d23a5
+sym_muscle_pain,Symptoms - MSK,Muscle pain,checkbox,False,1,muscle_pain,maps_to nodes_symptom.symptom_id,ae3030f28d0e153ce0a77ef6f5fafe80d392ee4a7b554798b935c7d47396b6fb
+sym_followup_start,Symptom Follow-ups,When did this symptom start?,radio,False,2,symptom_details[].start,today/days/weeks/months,8ef9ca9c7e2e4183b316a13dce270fc2f8eb0df6d72539fd56682352c8201f01
+sym_followup_severity,Symptom Follow-ups,How severe is it right now? (0–10),numeric,False,2,symptom_details[].severity_0_10,,e3958f3fd4f53812e3276b02f4a7673de46632c64f2237da999798fef8a87dcb
+sym_followup_course,Symptom Follow-ups,"Is it improving, worsening, or unchanged?",radio,False,2,symptom_details[].course,,09ffe8f906f2aaa9073a5fc0e69d15283e047efa880a4dbf8ac360771fc4e9da
+rf_chest_pain,Red Flags,Chest pain or pressure,yes_no,True,1,red_flags.chest_pain,,0581a3f8deb9e37f01b5c1727e65f10b852a81095423b38a0ad92f851ed20462
+rf_severe_sob,Red Flags,Severe shortness of breath,yes_no,True,1,red_flags.severe_shortness_of_breath,,44b6a13eedfca5defee8db2cb538a2fe81c732ad17155f7fef5fa512a3438fea
+rf_faint_confuse,Red Flags,Fainting or confusion,yes_no,True,1,red_flags.fainting_or_confusion,,39638202674b1b7e6c2b4e1a72139aa003895aa69ae2e31de6db22f52242b5f2
+rf_new_neuro,Red Flags,"New weakness, facial droop, or trouble speaking",yes_no,True,1,red_flags.new_neuro_deficit,,71cc0b415b26d003442ef90bb537885ff9704807ea7890ca3d561730a7fce2fa
+rf_thunder_headache,Red Flags,Sudden severe headache,yes_no,True,1,red_flags.sudden_severe_headache,,52d49d9af317e3f33152f26947fcc81751e7028b7aa8b5ec63be3c32a0cfb746
+rf_fever_neck,Red Flags,High fever with stiff neck,yes_no,True,1,red_flags.fever_with_neck_stiffness,,810d63fb62540e8389a7744f624343559f3d8a8620d7df4c7e4bb3240d195106
+rf_blood_vomit_stool,Red Flags,Blood in vomit or stool,yes_no,True,1,red_flags.blood_in_vomit_or_stool,,d806f99ab813330d49c3054806f42c21fe4e49c675f052049e8fa2560fe8931f
+rf_severe_abd,Red Flags,Severe abdominal pain,yes_no,True,1,red_flags.severe_abdominal_pain,,d2f0af708923dfae04c31c9794c4bc27153db2903dc730a0409f3840b558ac0e
+rf_preg_comp,Red Flags,Pregnancy-related bleeding or severe pain (if applicable),yes_no,True,1,red_flags.pregnancy_complication,,b06a6e6816ee3e2f288c7fb556e0e8d592f2d473d20b8e3fccdd4f09b3ec1fcc
+v_temp,Vitals,Temperature,numeric_or_unknown,True,1,vitals.temperature_c,Unknown allowed,a8d2025dfd8e15ee551dae671fe8557ac972e8bd6b305bdace30f5f8ef7bae7e
+v_bp,Vitals,Blood pressure (systolic/diastolic),two_number_or_unknown,True,1,vitals.bp,Unknown allowed,f45fa6078e3c5dc59c22e3b3ef0ef326f3f7d6017b514fe3840b238ce0be2dd4
+v_hr,Vitals,Heart rate,numeric_or_unknown,True,1,vitals.heart_rate,Unknown allowed,0cc8955d4b79023da7103f5e48915b5c9049920d902d8ef5e348f40b9ad33cae
+v_spo2,Vitals,Oxygen saturation (SpO₂),numeric_or_unknown,True,1,vitals.spo2,Unknown allowed,5d7782dd5369b64f27bc036a952dd372f9b2f30705fd6620c71fa05b3b293593
+pmh_conditions,Medical History,Select any medical conditions you have (or 'none').,multi_select,False,2,history.conditions,Include other/none,f2036f4aed777d2674d85412140fe73fdae84c6b39993b0a228ad321f648b38a
+pmh_surgeries,Medical History,Have you had any surgeries or hospitalizations?,yes_no,False,3,history.surgeries,"If yes, ask details",5075d08df11f432e81a77dbe9be262b3c6c56242d01a5303b468358ec6e44ff3
+pmh_surgeries_details,Medical History,"If yes, describe surgeries/hospitalizations.",free_text,False,3,history.surgeries_details,Shown if pmh_surgeries=yes,4efa6b8f2a2a6811f5eaac2592a71e0f40a7373152ed046dc4614121d552ecf3
+meds_list,Medications,"What medications, vitamins, or supplements do you take?",free_text,True,1,history.medications_free_text,Allow commas/spaces,3aa2f31ecd88d7ff90575d82478e7bae28ee311c92a6968631e53d7240d546e1
+allergies_drug,Allergies,Any drug allergies? Include reaction (or 'none').,free_text,True,1,history.allergies_drug_text,,4947e0358f3945dba789ad8918501fb7d6c7bfd5bfdcc8f8c9bb2f74d00329a2
+allergies_other,Allergies,Any other allergies (food/environmental)?,free_text,False,2,history.allergies_other_text,,9b4bc4371ec46a88aeb95d2a79834f323591288a89b966d51211bde45276f46e
+fam_history,Family History,"Family history: heart disease, stroke, diabetes, cancer, autoimmune (or 'none/unknown').",multi_select,False,3,history.family_history,,92676511acb19dde3063b651c963452b0bce462c85d38d1c75e8b6d0adc658bd
+social_disclaimer_ack,Social History,I understand these questions are confidential and used only for medical care.,checkbox,True,2,history.social_history_disclaimer_acknowledged,,480b18b00ac0cb8e7654d8ff0cc533aea5ac9725ec3c81f49a7cafcaf3c2f24d
+soc_tobacco,Social History,Tobacco/nicotine use (includes vaping),structured,False,2,history.social.tobacco_use,status/types/frequency/prefer_not_to_say,585a9dd4cd7b224e7174aa3c26b7aad62437631615ccd234c529b58c72a05575
+soc_alcohol,Social History,Alcohol use pattern,radio,False,2,history.social.alcohol_use,never/occasional/weekly/daily/binge/prefer_not_to_say,c477818ef00c2471dd61fefd41c93dd89dc2f9d53469a12d774495954978b575
+soc_drugs,Social History,Recreational drug use,structured,False,2,history.social.recreational_drugs,types/frequency/prefer_not_to_say,93006c9074db10f386215a4fbb56976aa790c644e25250944b2a17ae41c5288a
+soc_nonrx,Social History,Non-prescribed medications or supplements,structured,False,3,history.social.non_prescribed_substances,types/notes,75d5f679205d812212f7cdf6b4414da8c888e31a07ca0c1e3f85e2cb33b2e404
+soc_caffeine,Social History,Caffeine use,radio,False,3,history.social.caffeine_use,none/low/moderate/high,8a3a9cf39f0f281a00973f09f9d9d580fda261be0461a4ceff79d8523359348d
+soc_sleep,Lifestyle,Sleep quality,radio,False,2,history.social.sleep_quality,good/fair/poor/irregular,8a30240de9a299f6974ea13d742af1e87baaf2d2ba5ab59da8d4e3e65a16c567
+soc_activity,Lifestyle,Physical activity level,radio,False,3,history.social.physical_activity,sedentary/light/moderate/high,774ca3e9eeddd1618b0c8359a3f19a3f0ed511238589ef450c70aa91abf15c4b
+soc_occupation,Lifestyle,Occupation/exposures,multi_select,False,3,history.social.occupation_exposures,desk_work/repetitive_motion/chemicals/other,ac25be24530e18a21410983774bc1703fda745711aba29b3f78f1f7377dab5f4
+soc_stress,Lifestyle,Stress level,radio,False,3,history.social.stress_level,low/moderate/high/prefer_not_to_say,512e4006d8f90ee2c2f4dfdafe02413528b44ef25e98994cb55172cd00706498
+ros_other,Review of Systems,Anything else you’ve noticed that we didn’t ask about?,free_text,False,3,context.ros_other,,ad9579fda71d9a68068945ad4769f8e2784cc8aa1e49848fa392baa73faf9d70

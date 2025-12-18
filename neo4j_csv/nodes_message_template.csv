@@ -1,0 +1,44 @@
+template_id,name,subject_template,body_template,id
+tmpl_general,General visit summary,Your visit summary and next steps,"Hello {patient_name},
+
+Thank you for completing your visit today.
+
+Summary:
+{plan_summary}
+
+Follow-up:
+{followup_instructions}
+
+Important:
+{return_precautions}
+
+Best regards,
+{clinic_name}",200124736111e6914d2d18e5434e85b12aed1a86b516a03872b60adc0c362676
+tmpl_posture_headache,Posture-related headache guidance,Your visit summary and posture-related headache guidance,"Hello {patient_name},
+
+Your clinician reviewed your visit and discussed that your symptoms may be related to posture and muscle strain.
+
+Plan:
+{plan_summary}
+
+Attachments:
+- Posture and ergonomics guidance
+- Exercises as appropriate
+
+Follow-up:
+{followup_instructions}
+
+Important:
+{return_precautions}
+
+{clinic_name}",67286ed414d1cfe6d4c37b4cb3fcd81e7daa035203efeb75865c2f27f900d8ab
+tmpl_urgent,Urgent follow-up,Important follow-up from your visit,"Hello {patient_name},
+
+Your care team identified findings that require prompt evaluation.
+
+Next steps:
+{plan_summary}
+
+If symptoms worsen or urgent warning signs develop, seek care promptly.
+
+{clinic_name}",843cfd9aab2844813dc512317828bdfef09758d09b3a173abaaff544e2f92730

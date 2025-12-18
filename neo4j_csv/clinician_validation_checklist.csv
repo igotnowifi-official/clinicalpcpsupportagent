@@ -1,0 +1,12 @@
+area,validation_item,status_notes,id
+Intake completeness,Tier 1 questions cannot be skipped without explicit Unknown/Prefer-not-to-say.,,5f862d38263e4f63caaf789c7a01f3e79111ee791026a6a68c5b5da30be963cd
+Red flags,Red flags appear early and do not block intake.,,a6b93c365af38e3cd77887daf31c71926532b98a91244dea320433862bd4284e
+Vitals unknown handling,Unknown vitals generate assistant actions in clinician view.,,a684b15cd200cc2ff7798e222f1b0e3b19234b326e46ce3e129385c7e37c8840
+Differential display,Clinician always sees top 5 diagnoses with probabilities and confidence labels.,,2ddd7be7be3f58f471f79ba92b341c013c34d69c1e175ddf635fa266714ce25a
+Patient safety,Patient UI never shows diagnoses/probabilities; patient emails avoid probabilities.,,bcf4d6dc60cdc457577fff7dee8fe0e555c65aece77d712dfecf51494a55bf72
+Assistant loop,Completing assistant actions triggers immediate re-triage and updates outputs.,,9405905b9865d3d7f161581d7aa17becff98e76f5e689815f32b70e772f0c328
+Follow-up questions,Low confidence generates follow-up questions limited to a reasonable number.,,1752be5100d34d96a77c617491e7448d6e2deed2af0d97c69a4dd0aa11d0d629
+Clinical wrap-up,"Clinician can set final diagnosis, plan, follow-up instructions.",,dbe99e1089eeba767bb19e15bae222fa6f1edc59f32e9962c86efc60083f1dd3
+Messaging,Draft email generated from plan; attachments selectable; routing available.,,a7d53f58c5eee7781555596d348018448b6cbd3e82f68eccfe5a4ac22a8c8294
+Audit,All clinician/staff actions and sensitive data access create audit events.,,b7a36f187f3b5a5aee6f95f335e2a8647032edf1c48ca36273bee1ce8316124a
+Ownership credit,"Headers, README, and UI footer include igotnowifi, LLC attribution.",,70bded673f6be1c2e8529e1bc16d9f2ae26a5330a8f40b3f3924f84f0631f1f5

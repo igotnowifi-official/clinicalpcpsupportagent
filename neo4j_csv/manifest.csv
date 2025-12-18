@@ -1,0 +1,3 @@
+pack_id,created_at,author,notes,schema_version,is_active,id
+pack_20251216_v01,2025-12-16T22:24:38.173009Z,team,Starter pilot-ready pack (prefilled),v1,False,fb8f8fe6e91c146be5bf7388c3c6d2e35011a0673aa401fc6a102e693a9e36d8
+pack_20251216_v02,2025-12-17T02:01:47.716360Z,team,Added clinic-grade intake questionnaire + branching + telehealth questionnaire + validation checklist,v1,False,988b3756d41ad2a138a1bc8f9420cba8367d32af45af6929bd640c62577e7182
