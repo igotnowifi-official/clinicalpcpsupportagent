@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Issue, IntakePayload, IntakeStep, createInitialIntakePayload, TriageResult } from '@/types/intake';
 import { submitIntake, getTriageResult } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
@@ -13,23 +13,38 @@ import ReviewScreen from '@/components/ReviewScreen';
 import IntakeComplete from '@/components/IntakeComplete';
 
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ArrowLeft, Plus } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import Footer from '@/components/Footer';
 
 interface IntakeFlowProps {
   isRemote?: boolean;
+  sessionToken?: string;
 }
 
 const STEPS: IntakeStep[] = ['consent', 'red_flags', 'body_map', 'symptoms_vitals', 'history', 'review', 'complete'];
 
-const IntakeFlow = ({ isRemote = false }: IntakeFlowProps) => {
+const IntakeFlow = ({ isRemote = false, sessionToken }: IntakeFlowProps) => {
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState<IntakeStep>('consent');
-  const [payload, setPayload] = useState<IntakePayload>(createInitialIntakePayload());
+
+  const [payload, setPayload] = useState<IntakePayload>(() => {
+    const p = createInitialIntakePayload();
+    if (sessionToken) {
+      (p as any).session_token = sessionToken;
+    }
+    return p;
+  });
+
   const [intakeId, setIntakeId] = useState<string>('');
   const [triageResult, setTriageResult] = useState<TriageResult | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (sessionToken) {
+      setPayload(prev => ({ ...(prev as any), session_token: sessionToken } as IntakePayload));
+    }
+  }, [sessionToken]);
 
   const stepIndex = STEPS.indexOf(currentStep);
   const progress = ((stepIndex) / (STEPS.length - 1)) * 100;
@@ -47,7 +62,7 @@ const IntakeFlow = ({ isRemote = false }: IntakeFlowProps) => {
   // Handle body region click
   const handleRegionClick = (regionId: string, regionName: string) => {
     const existing = payload.issues.find(i => i.body_region_id === regionId);
-    
+
     if (existing) {
       // Remove if already selected
       setPayload(prev => ({
