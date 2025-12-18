@@ -127,7 +127,7 @@ export const transformIntakePayloadToBackend = (
     
     // Tier 1
     chief_concern: payload.issues.length > 0 
-      ? payload.issues[0].description 
+      ? (payload.issues[0].description || `Issue with ${payload.issues[0].body_region}`)
       : payload.symptoms.length > 0 
         ? `Symptoms: ${payload.symptoms.join(', ')}`
         : 'General consultation',

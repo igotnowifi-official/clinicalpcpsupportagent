@@ -88,6 +88,30 @@ const IntakeFlow = ({ isRemote = false }: IntakeFlowProps) => {
   };
 
   const handleSubmit = async () => {
+    // Validation
+    if (payload.issues.length === 0 && payload.symptoms.length === 0) {
+      toast({
+        title: "Information Required",
+        description: "Please report at least one issue or symptom before submitting.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (payload.symptoms.length === 0) {
+      // Auto-select "none" if no symptoms selected, assuming the user meant no additional symptoms
+      // However, the backend requires strict compliance.
+      // Better to warn the user.
+      toast({
+        title: "Symptoms Required",
+        description: "Please select your symptoms or 'None of the above'.",
+        variant: "destructive"
+      });
+      // Navigate back to symptoms step
+      setCurrentStep('symptoms_vitals');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       // Submit intake (this will issue questionnaire and submit in one flow)

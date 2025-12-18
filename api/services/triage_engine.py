@@ -78,12 +78,15 @@ class TriageEngine:
         for idx, row in conditions_df.iterrows():
             cond_id = row.get('condition_id')
             cond_name = row.get('condition_name')
+            if not cond_name:
+                continue
+
             cond_symptoms = str(row.get('key_symptoms') or "").split(";")
             cond_rf_ids = [rf.strip() for rf in str(row.get('red_flags') or "").split(";") if rf.strip()]
             cond_supports = str(row.get('supports') or "").split(";")
             match_symptoms = len(set(cond_symptoms) & patient_positive_symptoms)
             match_supports = len(set(cond_supports) & pmh)
-            match_issues = sum(1 for desc in issue_descriptions if cond_name.lower() in desc.lower())
+            match_issues = sum(1 for desc in issue_descriptions if desc and cond_name.lower() in desc.lower())
             # Score: weighted sum for this MVP
             score = match_symptoms * 2 + match_supports + match_issues
             # Add weight if patient has key medication or allergy
@@ -205,4 +208,18 @@ class TriageEngine:
                     (f"due to red flags: {flagged}" if has_red_flags else "no red flags."),
             red_flags=flagged,
             major_anomalies=major_anomalies
+        )
+
+        return TriageResult(
+            intake_session_token=intake.session_token,
+            triage_id=f"triage_{uuid.uuid4().hex[:16]}",
+            timestamp=datetime.utcnow(),
+            top_5_conditions=top_5_conditions,
+            assistant_actions=assistant_actions,
+            followup_questions=followup_questions,
+            triage_summary=triage_summary,
+            suggestions=suggestions,
+            wrapup={},
+            patient_communication_draft=None,
+            audit_event_id=None
         )

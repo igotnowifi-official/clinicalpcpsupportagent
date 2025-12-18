@@ -83,10 +83,17 @@ export const submitIntake = async (
     body: JSON.stringify(backendPayload),
   });
 
+  if (response.status === 'rejected') {
+    const missing = response.missing_fields?.join(', ') || 'unknown fields';
+    throw new Error(`Submission rejected. Missing required information: ${missing}`);
+  }
+
   // Return in frontend format
   return {
     intake_id: response.session_token, // Use session_token as intake_id
     created_at: response.submitted_at || new Date().toISOString(),
+    status: response.status,
+    missing_fields: response.missing_fields,
   };
 };
 

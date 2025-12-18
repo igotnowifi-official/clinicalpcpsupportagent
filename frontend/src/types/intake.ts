@@ -45,6 +45,8 @@ export interface Issue {
   export interface IntakeResponse {
     intake_id: string;
     created_at: string;
+    status?: 'accepted' | 'rejected';
+    missing_fields?: string[];
   }
   
   export interface TriageResult {
