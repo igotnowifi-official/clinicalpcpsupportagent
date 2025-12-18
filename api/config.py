@@ -4,6 +4,7 @@ Proprietary and confidential.
 """
 
 import os
+from typing import Optional
 from pydantic import BaseSettings, Field
 
 class Settings(BaseSettings):
@@ -32,6 +33,10 @@ class Settings(BaseSettings):
     # Mock adapters for Neo4j and MemVerge
     MOCK_NEO4J: bool = Field(default=True, env="MOCK_NEO4J")
     MOCK_MEMVERGE: bool = Field(default=True, env="MOCK_MEMVERGE")
+    
+    # MemMachine configuration (when MOCK_MEMVERGE=False)
+    MEMMACHINE_ENDPOINT: str = Field(default="http://memmachine:8081", env="MEMMACHINE_ENDPOINT")
+    MEMMACHINE_API_KEY: Optional[str] = Field(default=None, env="MEMMACHINE_API_KEY")
 
     # Audit
     AUDIT_LOG_PATH: str = Field(default="data/audit.log", env="AUDIT_LOG_PATH")

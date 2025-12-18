@@ -17,6 +17,16 @@ from api.adapters.memory_store import get_memory_store
 from api.services.audit_logger import get_audit_logger
 from api.config import settings
 
+# Initialize memory store with config
+def _get_memory_store():
+    """Get memory store instance with configuration from settings"""
+    return get_memory_store(
+        persist_path=None,  # Use MemMachine in production
+        use_memmachine=not settings.MOCK_MEMVERGE,
+        memmachine_endpoint=settings.MEMMACHINE_ENDPOINT if not settings.MOCK_MEMVERGE else None,
+        memmachine_api_key=settings.MEMMACHINE_API_KEY if not settings.MOCK_MEMVERGE else None
+    )
+
 router = APIRouter()
 
 # Utility: Generate session tokens for issued questionnaires
@@ -41,7 +51,7 @@ async def issue_questionnaire(
         raise HTTPException(status_code=400, detail="intake_mode must be 'full' or 'telehealth'")
 
     session_token = _generate_session_token()
-    memory_store = get_memory_store()
+    memory_store = _get_memory_store()
     audit_logger = get_audit_logger()
     started_at = datetime.utcnow()
     expires_at = started_at + timedelta(minutes=settings.TOKEN_EXPIRE_MINUTES)
@@ -90,7 +100,7 @@ async def get_intake_session(
     """
     Retrieve an intake session (meta + status only).
     """
-    memory_store = get_memory_store()
+    memory_store = _get_memory_store()
     session = memory_store.get(f"intake_session:{session_token}")
     if not session:
         raise HTTPException(status_code=404, detail="Session not found or expired")
@@ -105,7 +115,7 @@ async def submit_intake(
     Patient submits intake questionnaire. Completion and compliance enforced.
     Triggers audit event.
     """
-    memory_store = get_memory_store()
+    memory_store = _get_memory_store()
     audit_logger = get_audit_logger()
     submitted_at = datetime.utcnow()
     session_token = resp.session_token

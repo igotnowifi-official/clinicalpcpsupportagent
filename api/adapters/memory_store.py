@@ -348,17 +348,43 @@ class MockMemoryStore:
 _memory_store_instance: Optional[MockMemoryStore] = None
 
 
-def get_memory_store(persist_path: Optional[str] = None) -> MockMemoryStore:
+def get_memory_store(
+    persist_path: Optional[str] = None,
+    use_memmachine: bool = False,
+    memmachine_endpoint: Optional[str] = None,
+    memmachine_api_key: Optional[str] = None
+) -> MockMemoryStore:
     """
-    Get singleton instance of MockMemoryStore.
+    Get singleton instance of memory store.
+    Can use MockMemoryStore (default) or MemMachineStore (production).
     
     Args:
-        persist_path: Optional path to persist store data
+        persist_path: Optional path to persist store data (for MockMemoryStore)
+        use_memmachine: If True, use MemMachineStore instead of MockMemoryStore
+        memmachine_endpoint: MemMachine server endpoint
+        memmachine_api_key: MemMachine API key
         
     Returns:
-        MockMemoryStore instance
+        MockMemoryStore or MemMachineStore instance
     """
     global _memory_store_instance
+    
+    if use_memmachine:
+        # Import MemMachine adapter
+        try:
+            from .memmachine_store import get_memmachine_store
+            return get_memmachine_store(
+                endpoint=memmachine_endpoint,
+                api_key=memmachine_api_key,
+                namespace="clinic_intake"
+            )
+        except ImportError:
+            print("Warning: MemMachine not available, falling back to MockMemoryStore")
+            if _memory_store_instance is None:
+                _memory_store_instance = MockMemoryStore(persist_path)
+            return _memory_store_instance
+    
+    # Use mock store
     if _memory_store_instance is None:
         _memory_store_instance = MockMemoryStore(persist_path)
     return _memory_store_instance

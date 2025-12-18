@@ -1,0 +1,66 @@
+version: '3.8'
+
+# Development docker-compose with hot reload
+# Usage: docker-compose -f docker-compose.dev.yml up
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: clinic-backend-dev
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV=development
+      - DEBUG=true
+      - FRONTEND_URL=http://localhost:5173
+      - MOCK_NEO4J=${MOCK_NEO4J:-true}
+      - MOCK_MEMVERGE=${MOCK_MEMVERGE:-true}
+    volumes:
+      - ./api:/app/api
+      - ./data:/app/data
+    command: python -m uvicorn api.main:app --host 0.0.0.0 --port 8080 --reload
+    networks:
+      - clinic-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: builder
+    container_name: clinic-frontend-dev
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8080
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0
+    networks:
+      - clinic-network
+    restart: unless-stopped
+
+  memmachine:
+    image: memverge/memmachine:latest
+    container_name: clinic-memmachine-dev
+    ports:
+      - "8081:8081"
+    environment:
+      - MEMMACHINE_API_KEY=${MEMMACHINE_API_KEY:-dev-key}
+    volumes:
+      - memmachine-data-dev:/var/lib/memmachine
+    networks:
+      - clinic-network
+    restart: unless-stopped
+
+volumes:
+  memmachine-data-dev:
+    driver: local
+
+networks:
+  clinic-network:
+    driver: bridge
+
