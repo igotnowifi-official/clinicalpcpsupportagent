@@ -238,3 +238,87 @@ function mapCourse(course: string): string {
   return mapping[course] || 'unchanged';
 }
 
+/**
+ * Transform backend IntakeQuestionnaireResponse to frontend IntakePayload format
+ */
+export const transformBackendToIntakePayload = (backendResponse: any): IntakePayload => {
+  // Transform issue_cards to issues
+  const issues = (backendResponse.issue_cards || []).map((card: any) => ({
+    id: card.issue_id,
+    body_region: 'unknown', // Not stored in card, inferred from region_id
+    body_region_id: card.region_id,
+    description: card.description,
+    pain_rating: card.pain_score || 0,
+    onset: mapBackendOnset(card.onset),
+    course: mapBackendCourse(card.course),
+    tags: []
+  }));
+
+  // Transform symptoms (list of objects to list of strings)
+  const symptoms = (backendResponse.symptoms || [])
+    .filter((s: any) => s.present)
+    .map((s: any) => s.symptom_id);
+
+  // Transform vitals
+  const vitals = backendResponse.vitals ? {
+    temperature_c: backendResponse.vitals.temperature,
+    bp_systolic: backendResponse.vitals.blood_pressure_systolic,
+    bp_diastolic: backendResponse.vitals.blood_pressure_diastolic,
+    heart_rate: backendResponse.vitals.heart_rate,
+    spo2: backendResponse.vitals.oxygen_saturation,
+  } : {};
+
+  // Transform history
+  const history = {
+    conditions: backendResponse.pmh || [],
+    allergies: (backendResponse.allergies || []).map((a: any) => a.allergen),
+    medications: (backendResponse.medications || []).map((m: any) => m.med_name).join(', '),
+    family_history: (backendResponse.family_history || []).map((f: any) => f.condition),
+    social: {
+        tobacco: backendResponse.social_history?.tobacco || '',
+        alcohol: backendResponse.social_history?.alcohol || '',
+        drugs: backendResponse.social_history?.drugs || '',
+        occupation: backendResponse.social_history?.occupation || '',
+        stressors: backendResponse.social_history?.stressors || '',
+        exercise: backendResponse.social_history?.exercise || '',
+    },
+  };
+
+  // Transform red flags
+  const red_flags = {
+    chest_pain: (backendResponse.red_flags || []).some((rf: any) => rf.red_flag_id === 'chest_pain' && rf.present),
+    severe_shortness_of_breath: (backendResponse.red_flags || []).some((rf: any) => rf.red_flag_id === 'severe_shortness_of_breath' && rf.present),
+    fainting_or_confusion: (backendResponse.red_flags || []).some((rf: any) => rf.red_flag_id === 'fainting_or_confusion' && rf.present),
+  };
+
+  return {
+    patient: {
+      patient_id: backendResponse.patient_id,
+      birthdate: '', // Not in intake response
+    },
+    consent: {
+      accepted: backendResponse.consent_acknowledged,
+    },
+    red_flags,
+    issues,
+    symptoms,
+    vitals,
+    history,
+  };
+};
+
+function mapBackendOnset(onset: string): any {
+    // Basic mapping, fallback to 'today'
+    if (['today', 'days', 'weeks', 'months'].includes(onset)) return onset;
+    return 'today';
+}
+
+function mapBackendCourse(course: string): any {
+    const mapping: Record<string, string> = {
+        'improving': 'better',
+        'worsening': 'worse',
+        'unchanged': 'same'
+    };
+    return mapping[course] || 'same';
+}
+

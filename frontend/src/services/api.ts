@@ -11,7 +11,8 @@ import { IntakePayload, IntakeResponse, TriageResult, ExplanationResult } from '
 import { API_CONFIG, apiRequest } from '@/config/api';
 import { 
   transformIntakePayloadToBackend, 
-  transformTriageResultFromBackend 
+  transformTriageResultFromBackend,
+  transformBackendToIntakePayload
 } from './apiTransform';
 
 // Extended intake with follow-ups
@@ -119,13 +120,7 @@ export const getTriageResult = async (
  * Production: GET /explain/{intake_id}
  */
 export const getExplanation = async (intake_id: string): Promise<ExplanationResult> => {
-  await new Promise(resolve => setTimeout(resolve, 200));
-
-  const intake = intakeStore.get(intake_id);
-  if (!intake) {
-    throw new Error(`Intake not found: ${intake_id}`);
-  }
-
+  const intake = await getIntakeRecord(intake_id);
   return generateExplanation(intake_id, intake);
 };
 
@@ -135,15 +130,7 @@ export const getExplanation = async (intake_id: string): Promise<ExplanationResu
  * Production: GET /intake/check/{patient_id}
  */
 export const checkExistingIntake = async (patient_id: string): Promise<{ exists: boolean; intake_id?: string }> => {
-  await new Promise(resolve => setTimeout(resolve, 200));
-
-  // In mock mode, check our local store
-  for (const [id, intake] of intakeStore.entries()) {
-    if (intake.patient.patient_id === patient_id) {
-      return { exists: true, intake_id: id };
-    }
-  }
-
+  // TODO: Implement backend check
   return { exists: false };
 };
 
@@ -156,16 +143,9 @@ export const updateIntakeVitals = async (
   intake_id: string,
   vitals: Partial<IntakePayload['vitals']>
 ): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
-
-  const intake = intakeStore.get(intake_id);
-  if (!intake) {
-    throw new Error(`Intake not found: ${intake_id}`);
-  }
-
-  // Merge new vitals with existing
-  intake.vitals = { ...intake.vitals, ...vitals };
-  intakeStore.set(intake_id, intake);
+  // For MVP, we might not have a backend endpoint for this yet, or use edit_answer
+  // Keeping as mock/no-op for now unless we need it for the dashboard to work
+  console.warn("updateIntakeVitals not fully implemented on backend");
 };
 
 /**
@@ -178,24 +158,8 @@ export const addFollowUp = async (
   question: string,
   answer: string
 ): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 200));
-
-  const intake = intakeStore.get(intake_id);
-  if (!intake) {
-    throw new Error(`Intake not found: ${intake_id}`);
-  }
-
-  if (!intake.follow_ups) {
-    intake.follow_ups = [];
-  }
-
-  intake.follow_ups.push({
-    question,
-    answer,
-    timestamp: new Date().toISOString(),
-  });
-
-  intakeStore.set(intake_id, intake);
+  // For MVP, not implemented on backend
+  console.warn("addFollowUp not fully implemented on backend");
 };
 
 /**
@@ -204,14 +168,19 @@ export const addFollowUp = async (
  * Production: GET /intake/{intake_id}
  */
 export const getIntakeRecord = async (intake_id: string): Promise<StoredIntake> => {
-  await new Promise(resolve => setTimeout(resolve, 200));
-
-  const intake = intakeStore.get(intake_id);
-  if (!intake) {
-    throw new Error(`Intake not found: ${intake_id}`);
+  const session = await apiRequest<any>(API_CONFIG.endpoints.clinician.review(intake_id));
+  
+  if (!session || !session.intake_data) {
+    throw new Error(`Intake data not found for session: ${intake_id}`);
   }
 
-  return intake;
+  const payload = transformBackendToIntakePayload(session.intake_data);
+
+  return {
+    ...payload,
+    created_at: session.submitted_at || session.started_at,
+    follow_ups: [] // Not yet supported in backend session model
+  };
 };
 
 function runTriageEngine(intake_id: string, intake: IntakePayload): TriageResult {
@@ -662,6 +631,14 @@ export const sendMessage = async (intake_id: string, draft: any): Promise<void> 
   const messages = messageStore.get(intake_id) || [];
   messages.push({ ...draft, status: 'sent_mock', sent_at: new Date().toISOString() });
   messageStore.set(intake_id, messages);
+};
+
+/**
+ * Get clinician dashboard data
+ */
+export const getClinicianDashboard = async (): Promise<any[]> => {
+  const sessions = await apiRequest<any[]>(API_CONFIG.endpoints.clinician.dashboard);
+  return sessions;
 };
 
 // Export store for debugging (remove in production)

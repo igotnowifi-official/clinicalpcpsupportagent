@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TriageResult, ExplanationResult, IntakePayload } from '@/types/intake';
-import { getTriageResult, getExplanation, _debugGetStore, updateIntakeVitals, addFollowUp, getIntakeRecord } from '@/services/api';
+import { getTriageResult, getExplanation, getClinicianDashboard, updateIntakeVitals, addFollowUp, getIntakeRecord } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -49,22 +49,31 @@ const ClinicianDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Load intakes from mock store
+  // Load intakes from backend
   const refreshIntakes = async () => {
     setIsLoading(true);
     try {
-      const store = _debugGetStore();
-      const records: IntakeRecord[] = [];
+      const sessions = await getClinicianDashboard();
       
-      for (const [id, intake] of store.entries()) {
-        const triage = await getTriageResult(id);
-        records.push({
-          id,
-          status: triage.status,
-          reviewed: false,
-          timestamp: new Date(intake.created_at),
+      const promises = sessions
+        .filter(session => session.status === 'submitted')
+        .map(async (session) => {
+          try {
+            const triage = await getTriageResult(session.session_token);
+            return {
+              id: session.session_token,
+              status: triage.status,
+              reviewed: session.reviewed || false,
+              timestamp: new Date(session.submitted_at || session.started_at),
+            } as IntakeRecord;
+          } catch (e) {
+            console.error(`Failed to get triage for session ${session.session_token}`, e);
+            return null;
+          }
         });
-      }
+
+      const results = await Promise.all(promises);
+      const records = results.filter((r): r is IntakeRecord => r !== null);
       
       // Sort by urgency then timestamp
       records.sort((a, b) => {

@@ -35,11 +35,11 @@ async def clinician_dashboard():
     memory_store = get_memory_store()
     sessions = []
     # Scan all keys for sessions (inefficient for MVP, replace with real DB)
-    for key in memory_store._store.keys():
-        if key.startswith("intake_session:"):
-            session = memory_store.get(key)
-            if session and session.get("status") != "completed":
-                sessions.append(IntakeSession(**session))
+    keys = memory_store.keys(pattern="intake_session:*")
+    for key in keys:
+        session = memory_store.get(key)
+        if session and session.get("status") != "completed":
+            sessions.append(IntakeSession(**session))
     # Order by started_at descending (most recent first)
     sessions = sorted(sessions, key=lambda s: s.started_at, reverse=True)
     return sessions
