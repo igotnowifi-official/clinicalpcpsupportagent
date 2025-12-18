@@ -90,25 +90,28 @@ const IntakeFlow = ({ isRemote = false }: IntakeFlowProps) => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
+      // Submit intake (this will issue questionnaire and submit in one flow)
       const response = await submitIntake(payload);
       setIntakeId(response.intake_id);
 
-      // Get triage result
+      // Get triage result from backend (uses real TriageEngine with Neo4j/Excel)
       const triage = await getTriageResult(response.intake_id);
       setTriageResult(triage);
 
       toast({
         title: "Intake submitted successfully",
-        description: `Reference: ${response.intake_id}`,
+        description: `Session: ${response.intake_id}`,
       });
 
       setCurrentStep('complete');
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       toast({
         title: "Submission failed",
-        description: "Please try again or contact staff for assistance.",
+        description: errorMessage || "Please try again or contact staff for assistance.",
         variant: "destructive",
       });
+      console.error('Intake submission error:', error);
     } finally {
       setIsSubmitting(false);
     }

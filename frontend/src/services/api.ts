@@ -1,16 +1,18 @@
 /**
- * API Service - Mock implementation for MVP
+ * API Service - Connected to FastAPI Backend with Neo4j Integration
  * 
- * This service provides mock responses that simulate the Python FastAPI backend.
- * To swap for real backend: Replace mock implementations with fetch calls to actual endpoints.
- * 
- * Backend API will be at:
- * - POST /intake -> IntakeResponse
- * - GET /triage/{intake_id} -> TriageResult
- * - GET /explain/{intake_id} -> ExplanationResult
+ * This service connects to the Python FastAPI backend which uses:
+ * - KnowledgeBaseAdapter (Excel or Neo4j mode)
+ * - MemoryStore adapter for session management
+ * - TriageEngine for clinical triage
  */
 
 import { IntakePayload, IntakeResponse, TriageResult, ExplanationResult } from '@/types/intake';
+import { API_CONFIG, apiRequest } from '@/config/api';
+import { 
+  transformIntakePayloadToBackend, 
+  transformTriageResultFromBackend 
+} from './apiTransform';
 
 // Extended intake with follow-ups
 interface StoredIntake extends IntakePayload {
@@ -27,40 +29,88 @@ const generateId = (): string => {
 };
 
 /**
- * Submit intake form
- * Mock: Stores in memory, returns generated ID
- * Production: POST to /intake endpoint
+ * Issue a questionnaire session (step 1: staff/clinician issues questionnaire)
  */
-export const submitIntake = async (payload: IntakePayload): Promise<IntakeResponse> => {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
+export const issueQuestionnaire = async (
+  patientId: string,
+  issuedBy: string = 'system',
+  intakeMode: 'full' | 'telehealth' = 'full'
+) => {
+  const response = await apiRequest<any>(API_CONFIG.endpoints.intake.issue, {
+    method: 'POST',
+    body: JSON.stringify({
+      patient_id: patientId,
+      issued_by: issuedBy,
+      intake_mode: intakeMode,
+    }),
+  });
+  
+  return response;
+};
 
-  const intake_id = generateId();
-  const created_at = new Date().toISOString();
+/**
+ * Submit intake form
+ * Step 1: Issue questionnaire (if not already issued)
+ * Step 2: Transform and submit intake data
+ * Returns session token and submission status
+ */
+export const submitIntake = async (
+  payload: IntakePayload,
+  sessionToken?: string,
+  patientId?: string
+): Promise<IntakeResponse> => {
+  // If no session token, issue a new questionnaire first
+  let token = sessionToken;
+  let patient_id = patientId || payload.patient.patient_id || `patient_${Date.now()}`;
+  
+  if (!token) {
+    const session = await issueQuestionnaire(patient_id, 'system', 'full');
+    token = session.session_token;
+  }
 
-  intakeStore.set(intake_id, { ...payload, created_at });
+  // Transform frontend payload to backend format
+  const backendPayload = transformIntakePayloadToBackend(
+    payload,
+    token,
+    patient_id,
+    'system',
+    'full'
+  );
 
+  // Submit to backend
+  const response = await apiRequest<any>(API_CONFIG.endpoints.intake.submit, {
+    method: 'POST',
+    body: JSON.stringify(backendPayload),
+  });
+
+  // Return in frontend format
   return {
-    intake_id,
-    created_at,
+    intake_id: response.session_token, // Use session_token as intake_id
+    created_at: response.submitted_at || new Date().toISOString(),
   };
 };
 
 /**
- * Get triage result
- * Mock: Implements triage logic locally
- * Production: GET /triage/{intake_id}
+ * Get triage result from backend
+ * Uses the real TriageEngine with Neo4j/Excel knowledge base
  */
-export const getTriageResult = async (intake_id: string): Promise<TriageResult> => {
-  await new Promise(resolve => setTimeout(resolve, 300));
+export const getTriageResult = async (
+  sessionToken: string,
+  actorType: string = 'clinician',
+  actorId?: string
+): Promise<TriageResult> => {
+  const response = await apiRequest<any>(API_CONFIG.endpoints.triage.run, {
+    method: 'POST',
+    body: JSON.stringify({
+      session_token: sessionToken,
+      actor_type: actorType,
+      actor_id: actorId,
+      is_rerun: false,
+    }),
+  });
 
-  const intake = intakeStore.get(intake_id);
-  if (!intake) {
-    throw new Error(`Intake not found: ${intake_id}`);
-  }
-
-  // Run mock triage logic
-  return runTriageEngine(intake_id, intake);
+  // Transform backend response to frontend format
+  return transformTriageResultFromBackend(response);
 };
 
 /**
