@@ -203,4 +203,6 @@ class TriageEngine:
             acuity=acuity,
             summary=f"Triage result: {acuity.upper()} " +
                     (f"due to red flags: {flagged}" if has_red_flags else "no red flags."),
-           
+            red_flags=flagged,
+            major_anomalies=major_anomalies
+        )

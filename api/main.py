@@ -4,6 +4,7 @@ Proprietary and confidential.
 """
 
 import uvicorn
+from typing import Optional, Dict, Any
 from fastapi import FastAPI, Request, Response, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
@@ -14,21 +15,30 @@ from starlette.responses import RedirectResponse
 
 from api.config import settings
 from api.routes import (
-    auth,
-    patient,
-    staff,
     clinician,
     questionnaire,
-    audit,
     intake,
-    assistant,
-    admin,
-    communication,
-    wrapup,
+    assistant_actions,
+    messaging,
+    checkin,
     triage
 )
-from api.services.knowledge import knowledge_pack_initializer
-from api.services.audit import emit_audit_event
+from api.services.audit_logger import get_audit_logger
+
+# Helper function for audit events
+async def emit_audit_event(event_type: str, actor_type: str, actor_id: Optional[str] = None, 
+                          session_token: Optional[str] = None, patient_id: Optional[str] = None,
+                          metadata: Optional[Dict[str, Any]] = None):
+    """Helper to emit audit events"""
+    audit_logger = get_audit_logger()
+    return audit_logger.log_event(
+        event_type=event_type,
+        actor_type=actor_type,
+        actor_id=actor_id,
+        session_token=session_token,
+        patient_id=patient_id,
+        metadata=metadata or {}
+    )
 
 APP_METADATA = {
     "title": settings.APP_NAME,
@@ -73,24 +83,17 @@ app.add_middleware(
     max_age=60 * settings.SESSION_EXPIRE_MINUTES
 )
 
-# Instantiate and load knowledge pack (Excel)
-@app.on_event("startup")
-async def startup_load_knowledge_pack():
-    knowledge_pack_initializer(settings.KNOWLEDGE_PACK_PATH)
+# Knowledge pack is loaded lazily by TriageEngine when first used
+# No need to pre-load on startup
 
 # --- ROUTERS (MUST MATCH SYSTEM WORKFLOWS: DO NOT REMOVE OR COLLAPSE) ---
-app.include_router(auth.router, prefix=settings.API_PREFIX + "/auth", tags=["Authentication"])
-app.include_router(patient.router, prefix=settings.API_PREFIX + "/patient", tags=["Patient"])
-app.include_router(staff.router, prefix=settings.API_PREFIX + "/staff", tags=["Staff"])
 app.include_router(clinician.router, prefix=settings.API_PREFIX + "/clinician", tags=["Clinician"])
 app.include_router(questionnaire.router, prefix=settings.API_PREFIX + "/questionnaire", tags=["Questionnaire"])
 app.include_router(intake.router, prefix=settings.API_PREFIX + "/intake", tags=["Intake"])
 app.include_router(triage.router, prefix=settings.API_PREFIX + "/triage", tags=["Triage"])
-app.include_router(assistant.router, prefix=settings.API_PREFIX + "/assistant", tags=["Assistant"])
-app.include_router(wrapup.router, prefix=settings.API_PREFIX + "/wrapup", tags=["Clinical Wrap-Up"])
-app.include_router(communication.router, prefix=settings.API_PREFIX + "/communication", tags=["Communication"])
-app.include_router(admin.router, prefix=settings.API_PREFIX + "/admin", tags=["Admin"])
-app.include_router(audit.router, prefix=settings.API_PREFIX + "/audit", tags=["Audit"])
+app.include_router(assistant_actions.router, prefix=settings.API_PREFIX + "/assistant", tags=["Assistant"])
+app.include_router(messaging.router, prefix=settings.API_PREFIX + "/communication", tags=["Communication"])
+app.include_router(checkin.router, prefix=settings.API_PREFIX + "/checkin", tags=["Check-In"])
 
 # --- ERROR HANDLING (for real-world pilot readiness) ---
 @app.exception_handler(RequestValidationError)

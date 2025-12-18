@@ -69,6 +69,7 @@ echo "   API docs available at http://localhost:8080/api/docs"
 echo "   Press Ctrl+C to stop"
 echo ""
 
-cd api
-python -m uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+# Run from project root so Python can find the 'api' module
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+python -m uvicorn api.main:app --host 0.0.0.0 --port 8080 --reload
 

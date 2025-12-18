@@ -24,7 +24,7 @@ class IssueCard(BaseModel):
     functional_impact: str = Field(
         ...,
         description="Functional impact: none/mild/moderate/severe",
-        regex="^(none|mild|moderate|severe)$"
+        pattern="^(none|mild|moderate|severe)$"
     )
     onset: str = Field(
         ...,
