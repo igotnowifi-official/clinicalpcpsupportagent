@@ -1,0 +1,258 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+@layer base {
+  :root {
+    /* Medical-grade color palette */
+    --background: 200 20% 98%;
+    --foreground: 210 40% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 40% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 40% 15%;
+
+    /* Primary - Trustworthy teal */
+    --primary: 175 65% 40%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 175 45% 92%;
+    --primary-hover: 175 65% 35%;
+
+    /* Secondary - Soft slate */
+    --secondary: 210 25% 93%;
+    --secondary-foreground: 210 40% 25%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 210 15% 50%;
+
+    --accent: 175 55% 95%;
+    --accent-foreground: 175 65% 30%;
+
+    /* Urgent/Warning colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --urgent: 0 85% 55%;
+    --urgent-soft: 0 85% 95%;
+    --urgent-foreground: 0 0% 100%;
+
+    /* Warning - Amber */
+    --warning: 38 92% 50%;
+    --warning-soft: 38 92% 95%;
+    --warning-foreground: 38 92% 20%;
+
+    /* Success - Green */
+    --success: 160 60% 45%;
+    --success-soft: 160 60% 95%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 210 25% 90%;
+    --input: 210 25% 90%;
+    --ring: 175 65% 40%;
+
+    --radius: 0.75rem;
+
+    /* Custom medical tokens */
+    --body-map-highlight: 175 65% 50%;
+    --body-map-selected: 175 65% 40%;
+    --pain-low: 160 60% 50%;
+    --pain-medium: 38 92% 50%;
+    --pain-high: 0 85% 55%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 175 65% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 175 55% 95%;
+    --sidebar-accent-foreground: 175 65% 30%;
+    --sidebar-border: 210 25% 90%;
+    --sidebar-ring: 175 65% 40%;
+  }
+
+  .dark {
+    --background: 210 40% 8%;
+    --foreground: 210 20% 95%;
+
+    --card: 210 35% 12%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 210 35% 12%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 175 65% 50%;
+    --primary-foreground: 210 40% 8%;
+    --primary-soft: 175 30% 20%;
+    --primary-hover: 175 65% 55%;
+
+    --secondary: 210 30% 18%;
+    --secondary-foreground: 210 20% 90%;
+
+    --muted: 210 30% 15%;
+    --muted-foreground: 210 15% 60%;
+
+    --accent: 175 30% 18%;
+    --accent-foreground: 175 50% 70%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --urgent: 0 75% 55%;
+    --urgent-soft: 0 50% 20%;
+
+    --warning: 38 80% 55%;
+    --warning-soft: 38 50% 20%;
+
+    --success: 160 50% 50%;
+    --success-soft: 160 30% 20%;
+
+    --border: 210 30% 20%;
+    --input: 210 30% 20%;
+    --ring: 175 65% 50%;
+
+    --sidebar-background: 210 35% 10%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 175 65% 50%;
+    --sidebar-primary-foreground: 210 40% 8%;
+    --sidebar-accent: 175 30% 18%;
+    --sidebar-accent-foreground: 175 50% 70%;
+    --sidebar-border: 210 30% 20%;
+    --sidebar-ring: 175 65% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .intake-container {
+    @apply max-w-2xl mx-auto px-4 py-6;
+  }
+
+  .intake-header {
+    @apply text-2xl md:text-3xl font-bold text-foreground mb-2;
+  }
+
+  .intake-subheader {
+    @apply text-muted-foreground mb-6;
+  }
+
+  .intake-card {
+    @apply bg-card rounded-xl border border-border p-6 shadow-sm;
+  }
+
+  .form-section {
+    @apply space-y-4 mb-6;
+  }
+
+  .form-label {
+    @apply text-sm font-medium text-foreground;
+  }
+
+  .body-region {
+    @apply cursor-pointer transition-all duration-200;
+    fill: hsl(var(--muted));
+    stroke: hsl(var(--border));
+    stroke-width: 1;
+  }
+
+  .body-region:hover {
+    fill: hsl(var(--primary-soft));
+    stroke: hsl(var(--primary));
+  }
+
+  .body-region.selected {
+    fill: hsl(var(--primary));
+    stroke: hsl(var(--primary-hover));
+    stroke-width: 2;
+  }
+
+  .urgent-banner {
+    @apply bg-urgent text-urgent-foreground px-4 py-3 rounded-lg flex items-center gap-3;
+  }
+
+  .warning-banner {
+    @apply bg-warning-soft border border-warning text-warning-foreground px-4 py-3 rounded-lg;
+  }
+
+  .success-banner {
+    @apply bg-success-soft border border-success text-success-foreground px-4 py-3 rounded-lg;
+  }
+
+  .pain-indicator {
+    @apply h-2 rounded-full transition-all;
+  }
+
+  .pain-low {
+    background: hsl(var(--pain-low));
+  }
+
+  .pain-medium {
+    background: hsl(var(--pain-medium));
+  }
+
+  .pain-high {
+    background: hsl(var(--pain-high));
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}

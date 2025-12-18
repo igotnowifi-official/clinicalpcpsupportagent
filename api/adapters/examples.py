@@ -1,9 +1,18 @@
 """
 © 2025 igotnowifi, LLC
 Proprietary and confidential.
+Made by Artem
 
 Example usage of KnowledgeBaseAdapter and MockMemoryStore
 """
+
+import sys
+from pathlib import Path
+
+# Add project root to Python path so we can import 'api' module
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 from api.adapters.knowledge_base import get_knowledge_base_adapter, reset_knowledge_base_adapter
 from api.adapters.memory_store import get_memory_store, reset_memory_store

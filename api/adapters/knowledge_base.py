@@ -8,8 +8,15 @@ from typing import Dict, Any, List, Optional
 from pathlib import Path
 import pandas as pd
 import os
-from neo4j import GraphDatabase
 from dotenv import load_dotenv
+
+# Optional Neo4j import - only needed if using Neo4j mode
+try:
+    from neo4j import GraphDatabase
+    NEO4J_AVAILABLE = True
+except ImportError:
+    NEO4J_AVAILABLE = False
+    GraphDatabase = None
 
 load_dotenv()
 
@@ -51,6 +58,9 @@ class KnowledgeBaseAdapter:
         self._initialized = False
         
         if use_neo4j:
+            if not NEO4J_AVAILABLE:
+                raise ImportError("Neo4j is not installed. Install it with: pip install neo4j")
+            
             # Initialize Neo4j connection
             self.neo4j_uri = neo4j_uri or os.getenv("NEO4J_URI")
             self.neo4j_user = neo4j_user or os.getenv("NEO4J_USERNAME")

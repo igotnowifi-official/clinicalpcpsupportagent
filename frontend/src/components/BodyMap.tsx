@@ -1,172 +1,97 @@
-/**
- * © 2025 igotnowifi, LLC
- * Proprietary and confidential.
- */
-
-import React, { useRef } from "react";
-import bodyFront from "../assets/body_front.svg";
-import bodyBack from "../assets/body_back.svg";
-
-type BodyMapView = "front" | "back";
-export type BodyRegionId =
-  | "head"
-  | "neck"
-  | "chest"
-  | "abdomen"
-  | "pelvis"
-  | "left_shoulder"
-  | "right_shoulder"
-  | "left_arm"
-  | "right_arm"
-  | "left_hand"
-  | "right_hand"
-  | "left_leg"
-  | "right_leg"
-  | "left_foot"
-  | "right_foot"
-  | "upper_back"
-  | "lower_back";
+import { useState } from 'react';
+import { BODY_REGIONS_FRONT, BODY_REGIONS_BACK } from '@/assets/bodyRegions';
+import { Button } from '@/components/ui/button';
+import { RotateCcw } from 'lucide-react';
 
 interface BodyMapProps {
-  view: BodyMapView;
-  onSelectRegion: (regionId: BodyRegionId) => void;
-  selectedRegions?: BodyRegionId[];
+  selectedRegions: string[];
+  onRegionClick: (regionId: string, regionName: string) => void;
 }
 
-const regionNames: Record<BodyRegionId, string> = {
-  head: "Head",
-  neck: "Neck",
-  chest: "Chest",
-  abdomen: "Abdomen",
-  pelvis: "Pelvis",
-  left_shoulder: "Left Shoulder",
-  right_shoulder: "Right Shoulder",
-  left_arm: "Left Arm",
-  right_arm: "Right Arm",
-  left_hand: "Left Hand",
-  right_hand: "Right Hand",
-  left_leg: "Left Leg",
-  right_leg: "Right Leg",
-  left_foot: "Left Foot",
-  right_foot: "Right Foot",
-  upper_back: "Upper Back",
-  lower_back: "Lower Back",
-};
+const BodyMap = ({ selectedRegions, onRegionClick }: BodyMapProps) => {
+  const [view, setView] = useState<'front' | 'back'>('front');
 
-const regionIdsFront: BodyRegionId[] = [
-  "head", "neck", "chest", "abdomen", "pelvis",
-  "left_shoulder", "right_shoulder",
-  "left_arm", "right_arm",
-  "left_hand", "right_hand",
-  "left_leg", "right_leg",
-  "left_foot", "right_foot"
-];
-
-const regionIdsBack: BodyRegionId[] = [
-  "head", "neck", "upper_back", "lower_back", "pelvis",
-  "left_shoulder", "right_shoulder",
-  "left_arm", "right_arm",
-  "left_hand", "right_hand",
-  "left_leg", "right_leg",
-  "left_foot", "right_foot"
-];
-
-const BodyMap: React.FC<BodyMapProps> = ({ view, onSelectRegion, selectedRegions }) => {
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  const handleRegionClick = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
-    const target = event.target as SVGElement;
-    const regionId = target.id as BodyRegionId;
-    if (
-      (view === "front" && regionIdsFront.includes(regionId)) ||
-      (view === "back" && regionIdsBack.includes(regionId))
-    ) {
-      onSelectRegion(regionId);
-    }
-  };
-
-  // Dynamically embed the SVG and assign clickable handlers to ids
-  const getBodyMapSVG = () => {
-    // Using dangerouslySetInnerHTML in MVP for dynamic region binding
-    const svgAsset = view === "front" ? bodyFront : bodyBack;
-    return (
-      <div className="bodymap-svg-container">
-        <object
-          type="image/svg+xml"
-          data={svgAsset}
-          className="bodymap-svg-object"
-          aria-label={`${view === "front" ? "Body Front" : "Body Back"} Map`}
-          onLoad={(e) => {
-            const svgDoc = (e.target as any).contentDocument;
-            const regionList = view === "front" ? regionIdsFront : regionIdsBack;
-            regionList.forEach((regionId) => {
-              const regionEl = svgDoc && svgDoc.getElementById(regionId);
-              if (regionEl) {
-                regionEl.style.cursor = "pointer";
-                regionEl.onclick = () => onSelectRegion(regionId);
-                if (
-                  selectedRegions &&
-                  selectedRegions.includes(regionId)
-                ) {
-                  regionEl.style.stroke = "#3b84de";
-                  regionEl.style.strokeWidth = "4px";
-                } else {
-                  regionEl.style.stroke = "#46546b";
-                  regionEl.style.strokeWidth = "2px";
-                }
-              }
-            });
-          }}
-          width={256}
-          height={512}
-        />
-      </div>
-    );
-  };
-
-  // For accessibility/fallback: a list of regions
-  const renderFallbackRegionList = () => (
-    <div className="bodymap-fallback-list">
-      <h4>{view === "front" ? "Front Body Regions" : "Back Body Regions"}</h4>
-      <ul>
-        {(view === "front" ? regionIdsFront : regionIdsBack).map((region) => (
-          <li key={region}>
-            <button
-              type="button"
-              className={`bodymap-region-btn${selectedRegions && selectedRegions.includes(region) ? " selected" : ""}`}
-              onClick={() => onSelectRegion(region)}
-            >
-              {regionNames[region]}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  const regions = view === 'front' ? BODY_REGIONS_FRONT : BODY_REGIONS_BACK;
 
   return (
-    <div className="bodymap-component">
-      {getBodyMapSVG()}
-      <div className="bodymap-toggle-row">
-        <span>
-          <b>Switch View: </b>
-        </span>
-        <button
-          type="button"
-          disabled={view === "front"}
-          onClick={() => onSelectRegion("head")} // prompt parent to set view
+    <div className="flex flex-col items-center">
+      <div className="flex gap-2 mb-4">
+        <Button
+          variant={view === 'front' ? 'default' : 'outline'}
+          onClick={() => setView('front')}
+          size="sm"
         >
           Front
-        </button>
-        <button
-          type="button"
-          disabled={view === "back"}
-          onClick={() => onSelectRegion("upper_back")} // prompt parent to set view
+        </Button>
+        <Button
+          variant={view === 'back' ? 'default' : 'outline'}
+          onClick={() => setView('back')}
+          size="sm"
         >
           Back
-        </button>
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={() => setView(view === 'front' ? 'back' : 'front')}
+          size="sm"
+          className="ml-2"
+        >
+          <RotateCcw className="w-4 h-4" />
+        </Button>
       </div>
-      <div className="bodymap-fallback">{renderFallbackRegionList()}</div>
+
+      <div className="relative bg-muted/30 rounded-xl p-4 border border-border">
+        <svg
+          viewBox="0 0 300 750"
+          className="w-full max-w-[250px] h-auto"
+          style={{ minHeight: '400px' }}
+        >
+          {/* Body outline */}
+          <defs>
+            <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="hsl(var(--muted))" />
+              <stop offset="100%" stopColor="hsl(var(--secondary))" />
+            </linearGradient>
+          </defs>
+
+          {regions.map((region) => {
+            const isSelected = selectedRegions.includes(region.id);
+            return (
+              <path
+                key={region.id}
+                d={region.path}
+                className={`body-region ${isSelected ? 'selected' : ''}`}
+                onClick={() => onRegionClick(region.id, region.name)}
+                style={{
+                  fill: isSelected ? 'hsl(var(--primary))' : 'hsl(var(--muted))',
+                  stroke: isSelected ? 'hsl(var(--primary-hover))' : 'hsl(var(--border))',
+                  strokeWidth: isSelected ? 2 : 1,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <title>{region.name}</title>
+              </path>
+            );
+          })}
+
+          {/* View label */}
+          <text
+            x="150"
+            y="760"
+            textAnchor="middle"
+            fill="hsl(var(--muted-foreground))"
+            fontSize="14"
+            fontWeight="500"
+          >
+            {view === 'front' ? 'Front View' : 'Back View'}
+          </text>
+        </svg>
+      </div>
+
+      <p className="text-sm text-muted-foreground mt-4 text-center">
+        Tap on the body area where you're experiencing an issue
+      </p>
     </div>
   );
 };

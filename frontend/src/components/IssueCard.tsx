@@ -1,127 +1,161 @@
-/**
- * © 2025 igotnowifi, LLC
- * Proprietary and confidential.
- */
-
-import React from "react";
-import { IssueCard as IssueCardType } from "../types/intake";
+import { useState } from 'react';
+import { Issue, ISSUE_TAGS } from '@/types/intake';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
+import { Badge } from '@/components/ui/badge';
+import { X, MapPin } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface IssueCardProps {
-  issue: IssueCardType;
-  onChange: (issue: IssueCardType) => void;
+  issue: Issue;
+  onUpdate: (issue: Issue) => void;
   onRemove: () => void;
 }
 
-const IssueCard: React.FC<IssueCardProps> = ({ issue, onChange, onRemove }) => {
-  const handleInputChange = (field: keyof IssueCardType, value: any) => {
-    onChange({
-      ...issue,
-      [field]: value,
-    });
+const ONSET_OPTIONS = [
+  { value: 'today', label: 'Today' },
+  { value: 'days', label: 'Few days' },
+  { value: 'weeks', label: 'Weeks' },
+  { value: 'months', label: 'Months' },
+] as const;
+
+const COURSE_OPTIONS = [
+  { value: 'better', label: 'Getting better' },
+  { value: 'worse', label: 'Getting worse' },
+  { value: 'same', label: 'Staying the same' },
+] as const;
+
+const IssueCard = ({ issue, onUpdate, onRemove }: IssueCardProps) => {
+  const getPainColor = (rating: number) => {
+    if (rating <= 3) return 'bg-success';
+    if (rating <= 6) return 'bg-warning';
+    return 'bg-urgent';
+  };
+
+  const handleTagToggle = (tagId: string) => {
+    const newTags = issue.tags.includes(tagId)
+      ? issue.tags.filter(t => t !== tagId)
+      : [...issue.tags, tagId];
+    onUpdate({ ...issue, tags: newTags });
   };
 
   return (
-    <div className="issue-card">
-      <div className="issue-card-header">
-        <span>
-          <b>Region:</b> {issue.region_id.charAt(0).toUpperCase() + issue.region_id.slice(1)}
-        </span>
-        <button
-          type="button"
-          className="remove-issue-btn"
+    <div className="intake-card animate-slide-in">
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <MapPin className="w-5 h-5 text-primary" />
+          <span className="font-semibold text-foreground">{issue.body_region}</span>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={onRemove}
-          aria-label="Remove issue"
+          className="text-muted-foreground hover:text-destructive"
         >
-          ×
-        </button>
+          <X className="w-4 h-4" />
+        </Button>
       </div>
 
-      <label>
-        Description/Concern
-        <input
-          type="text"
-          value={issue.description}
-          maxLength={80}
-          required
-          onChange={e => handleInputChange("description", e.target.value)}
-        />
-      </label>
+      <div className="space-y-5">
+        {/* Description */}
+        <div>
+          <Label className="form-label">Describe the issue</Label>
+          <Textarea
+            placeholder="What does it feel like? When did it start? Any triggers?"
+            value={issue.description}
+            onChange={(e) => onUpdate({ ...issue, description: e.target.value })}
+            className="mt-1.5 resize-none"
+            rows={3}
+          />
+        </div>
 
-      <label>
-        Pain Score (0–10)
-        <input
-          type="number"
-          min={0}
-          max={10}
-          required
-          value={issue.pain_score ?? ""}
-          onChange={e => handleInputChange("pain_score", Number(e.target.value))}
-        />
-      </label>
+        {/* Pain Rating */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <Label className="form-label">Pain level (0-10)</Label>
+            <span className={cn(
+              'text-sm font-semibold px-2 py-0.5 rounded',
+              issue.pain_rating <= 3 && 'bg-success-soft text-success',
+              issue.pain_rating > 3 && issue.pain_rating <= 6 && 'bg-warning-soft text-warning',
+              issue.pain_rating > 6 && 'bg-urgent-soft text-urgent'
+            )}>
+              {issue.pain_rating}
+            </span>
+          </div>
+          <Slider
+            value={[issue.pain_rating]}
+            onValueChange={([value]) => onUpdate({ ...issue, pain_rating: value })}
+            max={10}
+            step={1}
+            className="mt-2"
+          />
+          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+            <span>No pain</span>
+            <span>Worst pain</span>
+          </div>
+        </div>
 
-      <label>
-        Functional Impact
-        <select
-          value={issue.functional_impact}
-          onChange={e => handleInputChange("functional_impact", e.target.value)}
-          required
-        >
-          <option value="">Select...</option>
-          <option value="none">None</option>
-          <option value="mild">Mild</option>
-          <option value="moderate">Moderate</option>
-          <option value="severe">Severe</option>
-        </select>
-      </label>
+        {/* Onset */}
+        <div>
+          <Label className="form-label mb-2 block">When did this start?</Label>
+          <div className="flex flex-wrap gap-2">
+            {ONSET_OPTIONS.map(option => (
+              <Button
+                key={option.value}
+                type="button"
+                variant={issue.onset === option.value ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => onUpdate({ ...issue, onset: option.value })}
+              >
+                {option.label}
+              </Button>
+            ))}
+          </div>
+        </div>
 
-      <label>
-        Onset
-        <select
-          value={issue.onset}
-          onChange={e => handleInputChange("onset", e.target.value)}
-          required
-        >
-          <option value="">Select...</option>
-          <option value="today">Today</option>
-          <option value="days">Days</option>
-          <option value="weeks">Weeks</option>
-          <option value="months">Months</option>
-        </select>
-      </label>
+        {/* Course */}
+        <div>
+          <Label className="form-label mb-2 block">How is it changing?</Label>
+          <div className="flex flex-wrap gap-2">
+            {COURSE_OPTIONS.map(option => (
+              <Button
+                key={option.value}
+                type="button"
+                variant={issue.course === option.value ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => onUpdate({ ...issue, course: option.value })}
+              >
+                {option.label}
+              </Button>
+            ))}
+          </div>
+        </div>
 
-      <label>
-        Course
-        <select
-          value={issue.course}
-          onChange={e => handleInputChange("course", e.target.value)}
-          required
-        >
-          <option value="">Select...</option>
-          <option value="improving">Improving</option>
-          <option value="worsening">Worsening</option>
-          <option value="unchanged">Unchanged</option>
-        </select>
-      </label>
-
-      <label>
-        Triggers (optional)
-        <input
-          type="text"
-          value={issue.triggers || ""}
-          maxLength={80}
-          onChange={e => handleInputChange("triggers", e.target.value)}
-        />
-      </label>
-
-      <label>
-        Relief Factors (optional)
-        <input
-          type="text"
-          value={issue.relief_factors || ""}
-          maxLength={80}
-          onChange={e => handleInputChange("relief_factors", e.target.value)}
-        />
-      </label>
+        {/* Tags */}
+        <div>
+          <Label className="form-label mb-2 block">Type of issue (select all that apply)</Label>
+          <div className="flex flex-wrap gap-2">
+            {ISSUE_TAGS.map(tag => (
+              <Badge
+                key={tag.id}
+                variant={issue.tags.includes(tag.id) ? 'default' : 'outline'}
+                className={cn(
+                  'cursor-pointer transition-colors',
+                  issue.tags.includes(tag.id) 
+                    ? 'bg-primary text-primary-foreground hover:bg-primary-hover' 
+                    : 'hover:bg-muted'
+                )}
+                onClick={() => handleTagToggle(tag.id)}
+              >
+                {tag.label}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
