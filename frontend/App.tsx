@@ -3,11 +3,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useSearchParams } from "react-router-dom";
-import Index from "./pages/Index";
-import IntakeFlow from "./pages/IntakeFlow";
-import CheckIn from "./pages/CheckIn";
-import ClinicianDashboard from "./pages/ClinicianDashboard";
-import NotFound from "./pages/NotFound";
+import Index from "@/pages/Index";
+import IntakeFlow from "@/pages/IntakeFlow";
+import CheckIn from "@/pages/CheckIn";
+import ClinicianDashboard from "@/pages/ClinicianDashboard";
+import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
 

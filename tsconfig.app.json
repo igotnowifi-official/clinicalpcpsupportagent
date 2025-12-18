@@ -28,6 +28,8 @@
       "useDefineForClassFields": true
     },
     "include": [
-      "frontend/src"
+      "frontend/src",
+      "frontend/App.tsx",
+      "frontend/main.tsx"
     ]
   }
