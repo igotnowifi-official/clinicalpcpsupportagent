@@ -21,7 +21,8 @@ from api.routes import (
     assistant_actions,
     messaging,
     checkin,
-    triage
+    triage,
+    memory
 )
 from api.services.audit_logger import get_audit_logger
 
@@ -94,6 +95,7 @@ app.include_router(triage.router, prefix=settings.API_PREFIX + "/triage", tags=[
 app.include_router(assistant_actions.router, prefix=settings.API_PREFIX + "/assistant", tags=["Assistant"])
 app.include_router(messaging.router, prefix=settings.API_PREFIX + "/communication", tags=["Communication"])
 app.include_router(checkin.router, prefix=settings.API_PREFIX + "/checkin", tags=["Check-In"])
+app.include_router(memory.router, prefix=settings.API_PREFIX + "/memory", tags=["Memory"])
 
 # --- ERROR HANDLING (for real-world pilot readiness) ---
 @app.exception_handler(RequestValidationError)
