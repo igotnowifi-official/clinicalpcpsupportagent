@@ -31,7 +31,9 @@ source venv/bin/activate
 
 # Install/update dependencies
 echo "📥 Installing dependencies..."
-pip install -q --upgrade pip
+pip install -q --upgrade pip setuptools wheel
+echo "   Installing PyYAML (may take a moment on Python 3.13)..."
+pip install -q "pyyaml>=6.0.1" || echo "   Warning: PyYAML installation had issues, continuing..."
 pip install -q -r api/requirements.txt
 
 # Check for .env file

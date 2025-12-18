@@ -5,7 +5,12 @@ Proprietary and confidential.
 
 import os
 from typing import Optional
-from pydantic import BaseSettings, Field
+from pydantic import Field
+try:
+    from pydantic_settings import BaseSettings
+except ImportError:
+    # Fallback for pydantic v1
+    from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     # Application settings
@@ -53,5 +58,7 @@ class Settings(BaseSettings):
         case_sensitive = True
         env_file = ".env"
         env_file_encoding = "utf-8"
+        # Pydantic v2 compatibility
+        extra = "ignore"
 
 settings = Settings()

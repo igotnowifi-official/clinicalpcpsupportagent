@@ -13,7 +13,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import RedirectResponse
 
 from api.config import settings
-from api.routers import (
+from api.routes import (
     auth,
     patient,
     staff,
@@ -24,7 +24,8 @@ from api.routers import (
     assistant,
     admin,
     communication,
-    wrapup
+    wrapup,
+    triage
 )
 from api.services.knowledge import knowledge_pack_initializer
 from api.services.audit import emit_audit_event
@@ -84,6 +85,7 @@ app.include_router(staff.router, prefix=settings.API_PREFIX + "/staff", tags=["S
 app.include_router(clinician.router, prefix=settings.API_PREFIX + "/clinician", tags=["Clinician"])
 app.include_router(questionnaire.router, prefix=settings.API_PREFIX + "/questionnaire", tags=["Questionnaire"])
 app.include_router(intake.router, prefix=settings.API_PREFIX + "/intake", tags=["Intake"])
+app.include_router(triage.router, prefix=settings.API_PREFIX + "/triage", tags=["Triage"])
 app.include_router(assistant.router, prefix=settings.API_PREFIX + "/assistant", tags=["Assistant"])
 app.include_router(wrapup.router, prefix=settings.API_PREFIX + "/wrapup", tags=["Clinical Wrap-Up"])
 app.include_router(communication.router, prefix=settings.API_PREFIX + "/communication", tags=["Communication"])
